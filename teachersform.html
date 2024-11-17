@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professor Project Portal</title>
+    <link rel="stylesheet" href="teachersform.css">
+    <link rel="icon" href="logo.jpg" type="image/x-icon">
+</head>
+<body>
+    <div class="container">
+        <h1>Create New Project</h1>
+        <form id="projectForm" action="Proff.html" onsubmit="handleSubmit(event)">
+            <div class="form-group">
+                <label for="title">Project Title</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+
+            <div class="form-group">
+                <label for="description">Project Description</label>
+                <textarea id="description" name="description" rows="4" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="deadline">Submission Deadline</label>
+                <input type="datetime-local" id="deadline" name="deadline" required>
+            </div>
+
+            <div class="form-group">
+                <label for="documents">Project Documents</label>
+                <div class="file-upload">
+                    <input type="file" id="documents" name="documents" multiple
+                           accept=".pdf,.doc,.docx,.txt">
+                    <div class="file-label">
+                        Drop files here or click to upload
+                    </div>
+                </div>
+                <div id="fileList" class="file-list"></div>
+            </div>
+
+            <button type="submit" class="submit-btn">Create Project</button>
+        </form>
+    </div>
+    <script src="teacheersform.js"></script>
+</body>
+</html>

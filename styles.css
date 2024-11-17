@@ -1,0 +1,411 @@
+:root {
+    --color-bg: #111827;
+    --color-bg-secondary: #1f2937;
+    --color-text: #f9fafb;
+    --color-text-secondary: #9ca3af;
+    --color-border: #374151;
+    --color-primary: #2563eb;
+    --color-primary-hover: #1d4ed8;
+    --color-success: #065f46;
+    --color-success-text: #a7f3d0;
+  }
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: system-ui, -apple-system, sans-serif;
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    line-height: 1.5;
+  }
+  
+  .container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  header {
+    background-color: var(--color-bg-secondary);
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 4rem;
+  }
+  
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-text);
+  }
+  
+  .logo svg {
+    color: var(--color-primary);
+  }
+  
+  .logo span {
+    font-weight: bold;
+    font-size: 1.25rem;
+  }
+  
+  nav {
+    display: flex;
+    gap: 1.5rem;
+  }
+  
+  nav a {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+  }
+  
+  nav a:hover {
+    color: var(--color-primary);
+  }
+  
+  nav a.active {
+    background-color: var(--color-primary);
+    color: var(--color-text);
+  }
+ .hero {
+    text-align: center;
+    max-width: 48rem;
+    margin: 3rem auto;
+  }
+  
+  .hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .hero p {
+    color: var(--color-text-secondary);
+    font-size: 1.125rem;
+  }
+  .search {
+    margin-bottom: 2rem;
+  }
+  
+  .search-container {
+    max-width: 64rem;
+    margin: 0 auto;
+    background-color: var(--color-bg-secondary);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-border);
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .search-box {
+    flex: 1;
+    position: relative;
+    min-width: 200px;
+  }
+  
+  
+  .search-box input {
+    width: 100%;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    color: var(--color-text);
+  }
+  
+  select {
+    padding: 0.5rem 0.75rem;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    color: var(--color-text);
+    min-width: 150px;
+  }
+
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 4rem;
+  }
+  
+  .project-card {
+    background-color: var(--color-bg-secondary);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .project-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  
+  .project-image {
+    height: 12rem;
+    overflow: hidden;
+  }
+  
+  .project-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .project-content {
+    padding: 1.5rem;
+  }
+  
+  .project-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  
+  .department {
+    color: var(--color-primary);
+    font-weight: 500;
+  }
+  
+  .deadline {
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  
+  .project-card h3 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .project-card p {
+    color: var(--color-text-secondary);
+    margin-bottom: 1rem;
+  }
+  
+  .requirements h4 {
+    color: var(--color-text);
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+  }
+  
+  .requirements ul {
+    list-style: none;
+    margin-bottom: 1rem;
+  }
+  
+  .requirements li {
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  
+  .project-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .professor {
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+  }
+
+  .benefits {
+    background-color: var(--color-bg-secondary);
+    padding: 2rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-border);
+    margin-bottom: 4rem;
+  }
+  
+  .benefits h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+  }
+  
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+  }
+  
+  .benefit-card {
+    text-align: center;
+  }
+  
+  .benefit-icon {
+    background-color: var(--color-bg);
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+  }  
+  .benefit-card h3 {
+    margin-bottom: 0.5rem;
+    color: var(--color-text);
+  }
+  
+  .benefit-card p {
+    color: var(--color-text-secondary);
+  }
+
+  .btn-primary {
+    background-color: var(--color-primary);
+    color: var(--color-text);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background-color 0.2s;
+  }
+  
+  .btn-primary:hover {
+    background-color: var(--color-primary-hover);
+  }
+
+  .dashboard-header {
+    margin-bottom: 2rem;
+  }
+  
+  .dashboard-header h1 {
+    font-size: 1.875rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .dashboard-header p {
+    color: var(--color-text-secondary);
+  }
+  
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .stat-card {
+    background-color: var(--color-bg-secondary);
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-border);
+  }
+  
+  .stat-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+  }
+  
+  .stat-number {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--color-primary);
+  }
+  
+  .stat-card p {
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+  }
+
+  .projects-table-container {
+    background-color: var(--color-bg-secondary);
+    border-radius: 0.75rem;
+    border: 1px solid var(--color-border);
+    overflow: hidden;
+  }
+  
+  .table-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .table-responsive {
+    overflow-x: auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  th, td {
+    padding: 1rem 1.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--color-border);
+  }
+  
+  th {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+    font-weight: 500;
+  }
+  
+  td {
+    color: var(--color-text);
+  }
+  
+  .status-badge {
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  
+  .status-badge.active {
+    background-color: var(--color-success);
+    color: var(--color-success-text);
+  }
+  
+  input, select, textarea {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    background-color: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+    color: var(--color-text);
+    font-size: 0.875rem;
+  }
+  
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+  }
+  
+  ::placeholder {
+    color: var(--color-text-secondary);
+  }
+  .workable-button{
+    text-decoration: none;
+    color: white;
+  }

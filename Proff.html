@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Professor Dashboard - Academic Projects Platform</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="logo.jpg" type="image/x-icon">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <i class="fa-solid fa-book"></i>
+           <span>AcademicProjects</span>
+        </div>
+        <nav>
+          <a href="index.html">Student View</a>
+          <a href="#" class="active">Professor Dashboard</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main class="container dashboard">
+    <div class="dashboard-header">
+      <h1>Professor Dashboard</h1>
+      <p>Manage your research projects and student applications</p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-content">
+          <h3>Active Projects</h3>
+          <span class="stat-number">3</span>
+        </div>
+        <p>Currently accepting applications</p>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-content">
+          <h3>Applications</h3>
+          <span class="stat-number">12</span>
+        </div>
+        <p>Pending review</p>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-content">
+          <h3>Selected Students</h3>
+          <span class="stat-number">0</span>
+        </div>
+        <p>Currently working</p>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-content">
+          <h3>Completed</h3>
+          <span class="stat-number">0</span>
+        </div>
+        <p>Past projects</p>
+      </div>
+    </div>
+
+    <div class="projects-table-container">
+      <div class="table-header">
+        <h2>Research Projects</h2>
+        <button class="btn-primary" >
+          <i class="fa-solid fa-plus"></i>
+           <a class="workable-button" href="teachersform.html">Add Project</a>
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Project</th>
+              <th>Department</th>
+              <th>Deadline</th>
+              <th>Applications</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Machine Learning for Climate Data Analysis</td>
+              <td>Computer Science</td>
+              <td>Apr 15, 2025</td>
+              <td>5 new</td>
+              <td><span class="status-badge active">Active</span></td>
+            </tr>
+            <tr>
+              <td>Calculus Computing Algorithms</td>
+              <td>Maths</td>
+              <td>Apr 30, 2025</td>
+              <td>3 new</td>
+              <td><span class="status-badge active">Active</span></td>
+            </tr>
+            <tr>
+              <td>Sustainable Urban Development</td>
+              <td>Social Science</td>
+              <td>May 15, 2025</td>
+              <td>4 new</td>
+              <td><span class="status-badge active">Active</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

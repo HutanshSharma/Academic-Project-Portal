@@ -1,0 +1,153 @@
+:root {
+    --primary-color: #2196f3;
+    --primary-dark: #1976d2;
+    --text-color: #e0e0e0;
+    --background-color: #121212;
+    --surface-color: #1e1e1e;
+    --border-color: #333;
+    --input-bg: #2d2d2d;
+    --hover-color: #2c2c2c;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: system-ui, -apple-system, sans-serif;
+    line-height: 1.6;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    padding: 20px;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--surface-color);
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: var(--primary-color);
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+input[type="text"],
+textarea,
+input[type="datetime-local"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+}
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
+textarea {
+    resize: vertical;
+}
+
+.file-upload {
+    position: relative;
+    border: 2px dashed var(--border-color);
+    border-radius: 4px;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.3s ease;
+    background-color: var(--input-bg);
+}
+
+.file-upload:hover {
+    border-color: var(--primary-color);
+}
+
+.file-upload input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.file-label {
+    color: #888;
+}
+
+.file-list {
+    margin-top: 10px;
+}
+
+.file-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    background: var(--hover-color);
+    border-radius: 4px;
+    margin-bottom: 5px;
+}
+
+.remove-file {
+    background: none;
+    border: none;
+    color: #ff4d4d;
+    cursor: pointer;
+    padding: 4px 8px;
+}
+
+.submit-btn {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover {
+    background-color: var(--primary-dark);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.file-item {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.2);
+}
