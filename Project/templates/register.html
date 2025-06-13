@@ -1,0 +1,69 @@
+{% extends "layout.html" %}
+{% block content %}
+    <div class="container-register">
+        <div class="form-group">
+            <form method="POST" >
+                {{form.hidden_tag()}}
+                    <h1>Create Account</h1>
+                    <div class="input-group">
+                        {{form.username.label}}
+                        {% if form.username.errors %}
+                            {{form.username}}
+                            {% for error in form.username.errors %}
+                                <span class="text-danger">{{error}}</span>
+                            {% endfor %}
+                        {% else %}
+                            {{form.username}}
+                        {% endif %}
+                    </div>
+                    <div class="input-group">
+                        {{form.email.label}}
+                        {% if form.email.errors %}
+                            {{form.email}}
+                            {% for error in form.email.errors %}
+                                <span class="text-danger">{{error}}</span>
+                            {% endfor %}
+                        {% else %}
+                            {{form.email}}
+                        {% endif %}
+                    </div>
+                    <div class="input-group">
+                        {{form.password.label}}
+                        {% if form.password.errors %}
+                            {{form.password}}
+                            {% for error in form.password.errors %}
+                                <span class="text-danger">{{error}}</span>
+                            {% endfor %}
+                        {% else %}
+                            {{form.password}}
+                        {% endif %}
+                    </div>
+                    <div class="input-group">
+                        {{form.confirm_password.label}}
+                        {% if form.confirm_password.errors %}
+                            {{form.confirm_password}}
+                            {% for error in form.confirm_password.errors %}
+                                <span class="text-danger">{{error}}</span>
+                            {% endfor %}
+                        {% else %}
+                            {{form.confirm_password}}
+                        {% endif %}
+                    </div>
+                    <div class="input-group">
+                        {% for i in form.category%}
+                            <span>{{i.label}}{{i()}}</span>
+                        {% endfor %}
+                    </div>
+                    <div>
+                        {{form.submit(class="submit-btn")}}
+                    </div>
+                    
+                    <div class="change-form">
+                        <span>Already have an account?</span>
+                        <a href="{{url_for('login')}}" class="switch-form">LogIn</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
