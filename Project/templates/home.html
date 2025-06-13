@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+{% block content %}
+  <main class="container">
+    <section class="hero">
+      <h1>Discover Great Academic Opportunities</h1>
+      <p>Connect with professors and find research projects that suits your skills</p>
+    </section>
+
+    <section class="search">
+      <div class="search-container">
+        <div class="search-box">
+          <input type="text" placeholder="Search projects...">
+        </div>
+        <select>
+          <option>All Departments</option>
+          <option>Computer Science</option>
+          <option>Maths</option>
+          <option>Social Welfare</option>
+        </select>
+      </div>
+    </section>
+
+    <section class="projects">
+      <div class="project-grid">
+        <article class="project-card">
+          <div class="project-image">
+            <img src="https://images.unsplash.com/photo-1527474305487-b87b222841cc?auto=format&fit=crop&q=80" alt="Machine Learning Project">
+          </div>
+          <div class="project-content">
+            <div class="project-meta">
+              <span class="department">Computer Science</span>
+              <span class="deadline">
+                <i class="fa-regular fa-calendar"></i>
+                Due Apr 15, 2025
+              </span>
+            </div>
+            <h3>Machine Learning for Climate Data Analysis</h3>
+            <p>Research project focusing on applying machine learning algorithms to analyze climate patterns and predict environmental changes.</p>
+            <div class="requirements">
+              <h4>Requirements:</h4>
+              <ul>
+                <li>Python proficiency</li>
+                <li>Basics of Machine Learning</li>
+                <li>Statistics knowledge</li>
+              </ul>
+            </div>
+            <div class="project-footer">
+              <span class="professor">Prof. Vinit Jakhetiya</span>
+              <button class="btn-primary">Apply Now</button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+    
+    <section class="benefits">
+      <h2>Why Join Research Projects?</h2>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fa-solid fa-book"></i>
+          </div>
+          <h3>Gain Experience</h3>
+          <p>Work on real-world research projects and build your academic portfolio and skills</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fa-solid fa-id-card-clip"></i>
+          </div>
+          <h3>Network with Professors</h3>
+          <p>Build relationships with leading academics in your field</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">
+            <i class="fa-solid fa-graduation-cap"></i>
+          </div>
+          <h3>Advance Your Career</h3>
+          <p>Enhance your resume and open doors to future opportunities</p>
+        </div>
+      </div>
+    </section>
+  </main>
+{% endblock content %}
