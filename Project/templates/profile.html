@@ -2,7 +2,7 @@
 {% block content %}
     <main class="container dashboard">
     <div class="profile-header">
-      <img class="rounded-circle account-img" src="{{img_src}}">
+      <img class="rounded-circle account-img img-profile" src="{{img_src}}">
       <div class="details">
         <h2>{{current_user.username}}</h2>
         <p>{{current_user.email}}</p>
@@ -50,6 +50,7 @@
               <th>Project's Title</th>
               <th>Upload Date</th>
               <th>Applications</th>
+              <th>Update</th>
               <th>Delete</th>
             </tr>
           </thead>
@@ -59,7 +60,29 @@
                 <td>{{i.title}}</td>
                 <td>{{i.created_at.strftime("%Y-%m-%d")}}</td>
                 <td>{{i.user_count}}</td>
-                <td><a class="btn btn-danger" href="#">Delete</a></td>
+                <td><a class="btn btn-info" href="{{url_for('update_project',project_id=i.id)}}">Update</a></td>
+                <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
+                
+                  <!-- Modal -->
+                    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                          <div class="modal-header">
+                              <h5 class="modal-title" style="color:black;" id="deleteModalLabel">Delete Project Permanently</h5>
+                              <button type="button" style="margin:0.01rem;" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                              </button>
+                          </div>
+                          <div class="modal-footer">
+                              <form action="{{url_for('delete_project',project_id=i.id)}}" method="POST">
+                                  <input type="submit" class="btn btn-danger" value="Delete">
+                              </form>
+                          </div>
+                          </div>
+                      </div>
+                    </div>
+                
+                </td>
               </tr>
               {% endfor %}
           </tbody>

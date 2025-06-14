@@ -1,5 +1,23 @@
 let skills=[];
 
+if(document.getElementById("update")){
+  console.log("print")
+  addSkillsToDisplay()
+}
+
+function addSkillsToDisplay(){
+  const input=document.getElementById("skills");
+  const skillsstr=input.value.trim();
+  const skillarr=skillsstr.split(",")
+  for(let i=0;i<skillarr.length;i++){
+    if(skillarr[i] && !skills.includes(skillarr[i])){
+      skills.push(skillarr[i].trim());
+      input.value="";
+    }
+  }
+  updateDisplay();
+}
+
 function addSkill() {
     const input=document.getElementById("skillInput");
     const skill=input.value.trim();
@@ -18,7 +36,7 @@ function updateDisplay() {
         const tag=document.createElement("span");
         tag.textContent=skill + " ";
 
-        tag.style.background="#1f2937"
+        tag.style.background="#111827"
         tag.style.margin="0 0.5rem 0 0"
         tag.style.padding="0.5rem 0.25rem 0.5rem 0.75rem";
         tag.style.border="solid 0.09rem #black";
@@ -46,3 +64,15 @@ function updateDisplay() {
 
     document.getElementById("skills").value =skills.join(", ");
   }
+
+  document.getElementById("image").addEventListener("change", function() {
+      const fileName=document.getElementById("file-name");
+      const file=this.files[0];
+      if(file){
+        fileName.textContent=file.name;
+      }
+      else{
+        fileName.textContent="No file chosen"
+      }
+      fileName.textContent = file ? file.name : "No file chosen";
+  });

@@ -37,7 +37,7 @@ h1 {
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 1rem;
 }
 
 label {
@@ -90,4 +90,30 @@ textarea {
 
 .skills{
     margin-top: 1.5rem;
+}
+
+.edit-profile-btn {
+    margin-top: 4rem;
+}
+
+.custom-btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #0d6efd;
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.custom-btn:hover {
+    background-color: #0b5ed7;
+}
+
+.file-info {
+    margin-left: 1rem;
+    border: solid 0.05rem;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
 }

@@ -1,13 +1,18 @@
+import os
+import secrets
+from PIL import Image
 from Project import app,db,bcrypt
 from flask import render_template,flash,redirect,request,url_for,abort
-from Project.forms import registeration_form,login_form,project_form
+from Project.forms import registeration_form,login_form,project_form,update_profile_form
 from Project.models import User,Project
 from flask_login import login_user,current_user,login_required,logout_user
+
 
 @app.route("/")
 @app.route("/home")
 def home():
     return render_template("home.html",title="Home")
+
 
 @app.route("/register",methods=['GET','POST'])
 def register():
@@ -26,6 +31,7 @@ def register():
         return redirect(url_for('login'))
     return render_template("register.html",form=form,title="Register")
 
+
 @app.route("/login",methods=['GET','POST'])
 def login():
     if current_user.is_authenticated:
@@ -33,14 +39,18 @@ def login():
     form=login_form()
     if form.validate_on_submit():
         user=User.query.filter_by(email=form.email.data).first()
-        if user and bcrypt.check_password_hash(user.password,form.password.data) and user.role==form.category.data[0]:
-            login_user(user,remember=False)
-            flash("You have been logged in successfully","success")
-            return redirect(url_for("home"))
+        if user:
+            if bcrypt.check_password_hash(user.password,form.password.data) and user.role==form.category.data[0]:
+                login_user(user,remember=False)
+                flash("You have been logged in successfully","success")
+                return redirect(url_for("home"))
+            else:
+                flash("Login unsuccessful check your details","danger")
         else:
-            print(bcrypt.check_password_hash(user.password,form.password.data))
-            flash("Login unsuccessful check your details","danger")
+                flash("User doesn't exists","danger")
+                return redirect(url_for("register"))
     return render_template("login.html",title="Login",form=form)
+
 
 @app.route("/logout")
 @login_required
@@ -48,18 +58,47 @@ def logout():
     logout_user()
     return redirect(url_for("login"))
 
+
 @app.route("/profile")
 @login_required
 def profile():
     projects=current_user.project
-    print(projects)
     img_src=url_for("static",filename="/profile_pics/"+current_user.profile_picture)
     return render_template("profile.html",title=current_user.username,img_src=img_src,projects=projects)
 
-@app.route("/profile/update")
+
+def save_pic(picture):
+    hex_name=secrets.token_hex(8)
+    _,extension=os.path.splitext(picture.filename)
+    file_name=hex_name+extension
+    path=os.path.join(app.root_path,'static/profile_pics',file_name)
+    size=(125,125)
+    i=Image.open(picture)
+    i.thumbnail(size)
+    i.save(path)
+    return file_name
+
+
+@app.route("/profile/update",methods=["GET","POST"])
 @login_required
 def update_profile():
-    return render_template("update_profile.html",title=current_user.username)
+    form=update_profile_form()
+    if form.validate_on_submit():
+        if form.image.data:
+            file_name=save_pic(form.image.data)
+            current_user.profile_picture=file_name
+            db.session.commit()
+        if current_user.username!=form.username.data or current_user.email!=form.email.data:
+            current_user.username=form.username.data
+            current_user.email=form.email.data
+            db.session.commit()
+        flash("Changes made","success")
+        return redirect(url_for("profile"))
+    elif request.method=="GET":
+        form.username.data=current_user.username
+        form.email.data=current_user.email
+    return render_template("update_profile.html",title=current_user.username,form=form)
+
 
 @app.route("/project/add",methods=['GET','POST'])
 @login_required
@@ -72,8 +111,51 @@ def add_project():
                      description=form.description.data,
                      skills=form.skills.data,
                      user=current_user)
+        current_user.total_projects+=1
         db.session.add(post)
         db.session.commit()
         flash("A new project has been added","success")
         return redirect(url_for("profile"))
-    return render_template("add_project.html",title=current_user.username,form=form)
+    else:
+        flash("Could not add the project","danger")
+    return render_template("project_edit.html",title=current_user.username,form=form,legend="Add New Project")
+
+
+@app.route("/project/update/<int:project_id>",methods=['GET','POST'])
+@login_required
+def update_project(project_id):
+    if current_user.role=='student':
+        abort(403)
+    form=project_form()
+    project=Project.query.get(project_id)
+    project_name=project.title.strip()
+    if form.validate_on_submit():
+        if form.title.data!=project.title or form.description.data!=project.description or form.skills.data!=project.skills:
+            project.title=form.title.data
+            project.description=form.description.data
+            project.skills=form.skills.data
+            db.session.commit()
+            flash(f"\"{project_name}\" has been updated successfully","success")
+            return redirect(url_for("profile"))   
+    elif request.method=='GET':
+        form.title.data=project.title
+        form.description.data=project.description
+        form.skills.data=project.skills
+    else:
+        flash(f"\"{project_name}\" could not be updated","danger")
+    return render_template("project_edit.html",title=current_user.username,form=form,legend="Update Project",id="update")
+
+
+@app.route("/project/delete/<int:project_id>",methods=['GET','POST'])
+@login_required
+def delete_project(project_id):
+    if current_user.role=='student':
+        abort(403)
+    project=Project.query.get(project_id)
+    project.user.total_projects-=1
+    project_name=project.title.strip()
+    db.session.delete(project)
+    db.session.commit()
+    flash(f"\"{project_name}\" has been deleted successfully","success")
+    return redirect(url_for("profile"))
+    

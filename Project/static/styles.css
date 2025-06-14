@@ -290,13 +290,10 @@
     margin: 2rem 0 2rem 1rem;
     display: flex;
   }
-  .profile-header img{
-    height: 10rem
-  }
 
   .details {
-    padding: 1rem;
     display: flex;
+    margin-left: 5rem;
     flex-direction: column;
     justify-content: space-between;
     color: var(--color-text-secondary);
@@ -399,4 +396,9 @@
     
   .correct{
     margin: 1rem;
+  }
+
+  .img-profile {
+    width: 10rem;
+    height: 10rem
   }

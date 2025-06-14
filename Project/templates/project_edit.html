@@ -1,11 +1,11 @@
 {% extends "layout.html" %}
 {% block customstyle %}
-        <link rel="stylesheet" href="{{url_for('static',filename='teachersform.css')}}">
+        <link rel="stylesheet" href="{{url_for('static',filename='forms.css')}}">
 {% endblock customstyle %}
 {% block content %}
     <div class="outer-container">
         <div class="container-teacherform">
-            <h1>Add New Project</h1>
+            <h1>{{legend}}</h1>
             <form method='POST' id="projectForm" action="">
                 <div class="form-group">
                     {{form.title.label}}
@@ -29,7 +29,7 @@
                             {{form.description}}
                         {% endif %}
                 </div>
-                <div class="form-group">
+                <div class="form-group" id="{{id}}">
                     {{ form.hidden_tag() }}
                     <div class="skills-grp">
                         {{ form.skills.label() }}
@@ -37,8 +37,12 @@
                         <button class="button button-diff add-btn" type="button" onclick="addSkill()">Add</button>
                         <div class="skills" id="skillsDisplay"></div>
                     </div>
-
                     {{ form.skills(id="skills") }}
+                    {% if form.skills.errors %}
+                        {% for error in form.skills.errors %}
+                            <span class="text-danger">{{error}}</span>
+                        {% endfor %}
+                    {% endif %}
                 </div>
                 <div>
                         {{form.submit(class="submit-btn")}}
@@ -46,5 +50,5 @@
             </form>
         </div>
     </div>
-    <script src="{{url_for('static',filename='teachersform.js')}}"></script>
+    <script src="{{url_for('static',filename='forms.js')}}"></script>
 {% endblock content %}

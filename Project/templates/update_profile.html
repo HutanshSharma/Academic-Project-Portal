@@ -1,4 +1,51 @@
 {% extends "layout.html" %}
+{% block customstyle %}
+        <link rel="stylesheet" href="{{url_for('static',filename='forms.css')}}">
+{% endblock customstyle %}
 {% block content %}
-
+    <div class="outer-container">
+        <div class="container-teacherform">
+            <form method='POST' action="" enctype="multipart/form-data">
+                {{form.hidden_tag()}}
+                    <h1>Update Profile</h1>
+                    <div class="form-group">
+                        {{form.username.label}}
+                        {% if form.username.errors %}
+                            {{form.username}}
+                            {% for error in form.username.errors %}
+                                <span class="text-danger">{{error}}</span>
+                            {% endfor %}
+                        {% else %}
+                            {{form.username}}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{form.email.label}}
+                        {% if form.email.errors %}
+                            {{form.email}}
+                            {% for error in form.email.errors %}
+                                <span class="text-danger">{{error}}</span>
+                            {% endfor %}
+                        {% else %}
+                            {{form.email}}
+                        {% endif %}
+                    </div>
+                    <div class="form-group">
+                        {{form.image.label}}
+                        {{form.image(id="image",style="display: none;")}}
+                        <label for="image" class="custom-btn">Upload Profile Picture</label>
+                        <span id="file-name" class="file-info">No file chosen</span>
+                        {% if form.image.errors %}
+                            {% for error in form.image.errors %}
+                                <span class="text-danger">{{error}}</span>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+                    <div class="form-group edit-profile-btn">
+                        {{form.submit(class="submit-btn")}}
+                    </div>
+            </form>
+        </div>
+    </div>
+    <script src="{{url_for('static',filename='forms.js')}}"></script>
 {% endblock content %}
