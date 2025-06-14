@@ -61,9 +61,10 @@
     gap: 1rem;
   }
   
-  nav a {
+  .button {
     color: var(--color-text-secondary);
     text-decoration: none;
+    text-align: center;
     height: 2rem;
     padding: 0.125rem 1rem;
     border-radius: 0.5rem;
@@ -72,7 +73,7 @@
     transition: all 0.2s;
   }
   
-  nav a:hover {
+  .button:hover {
     color: var(--color-text);
     text-decoration: none;
     background-color: var(--color-primary);
@@ -289,16 +290,19 @@
     background-color: var(--color-primary-hover);
   }
 
-  .dashboard-header {
-    margin-bottom: 2rem;
+  .profile-header {
+    margin: 2rem 0 2rem 1rem;
+    display: flex;
   }
-  
-  .dashboard-header h1 {
-    font-size: 1.875rem;
-    margin-bottom: 0.5rem;
+  .profile-header img{
+    height: 10rem
   }
-  
-  .dashboard-header p {
+
+  .details {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     color: var(--color-text-secondary);
   }
   

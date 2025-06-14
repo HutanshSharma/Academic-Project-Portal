@@ -1,3 +1,95 @@
 {% extends "layout.html" %}
 {% block content %}
+    <main class="container dashboard">
+    <div class="profile-header">
+      <img class="rounded-circle account-img" src="{{img_src}}">
+      <div class="details">
+        <h2>{{current_user.username}}</h2>
+        <p>{{current_user.email}}</p>
+        <p>{{current_user.role.capitalize()}}</p>
+        <a class="button" href="{{url_for('update_profile')}}">Edit Profile</a>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-content">
+          <h3>Active Projects</h3>
+          <span class="stat-number">3</span>
+        </div>
+        <p>Currently accepting applications</p>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-content">
+          <h3>Applications</h3>
+          <span class="stat-number">12</span>
+        </div>
+        <p>Pending review</p>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-content">
+          <h3>Selected Students</h3>
+          <span class="stat-number">0</span>
+        </div>
+        <p>Currently working</p>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-content">
+          <h3>Completed</h3>
+          <span class="stat-number">0</span>
+        </div>
+        <p>Past projects</p>
+      </div>
+    </div>
+
+    <div class="projects-table-container">
+      <div class="table-header">
+        <h2>Research Projects</h2>
+        <button class="btn-primary" >
+          <i class="fa-solid fa-plus"></i>
+           <a class="workable-button" href="teachersform.html">Add Project</a>
+        </button>
+      </div>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Project</th>
+              <th>Department</th>
+              <th>Deadline</th>
+              <th>Applications</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Machine Learning for Climate Data Analysis</td>
+              <td>Computer Science</td>
+              <td>Apr 15, 2025</td>
+              <td>5 new</td>
+              <td><span class="status-badge active">Active</span></td>
+            </tr>
+            <tr>
+              <td>Calculus Computing Algorithms</td>
+              <td>Maths</td>
+              <td>Apr 30, 2025</td>
+              <td>3 new</td>
+              <td><span class="status-badge active">Active</span></td>
+            </tr>
+            <tr>
+              <td>Sustainable Urban Development</td>
+              <td>Social Science</td>
+              <td>May 15, 2025</td>
+              <td>4 new</td>
+              <td><span class="status-badge active">Active</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
 {% endblock content %}

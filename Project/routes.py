@@ -33,21 +33,28 @@ def login():
     form=login_form()
     if form.validate_on_submit():
         user=User.query.filter_by(email=form.email.data).first()
-        if user and bcrypt.check_password_hash(user.password,form.password.data):
+        print(form.category.data)
+        if user and bcrypt.check_password_hash(user.password,form.password.data) and user.role==form.category.data[0]:
             login_user(user,remember=False)
-            flash("You have been logged in","success")
+            flash("You have been logged in successfully","success")
             return redirect(url_for("home"))
         else:
-            flash("Login unsuccessful","danger")
+            flash("Login unsuccessful check your details","danger")
     return render_template("login.html",title="Login",form=form)
 
 @app.route("/logout")
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for("home"))
+    return redirect(url_for("login"))
 
 @app.route("/profile")
 @login_required
 def profile():
-    return render_template("profile.html",title=current_user.username)
+    img_src=url_for("static",filename="/profile_pics/"+current_user.profile_picture)
+    return render_template("profile.html",title=current_user.username,img_src=img_src)
+
+@app.route("/update_profile")
+@login_required
+def update_profile():
+    return render_template("update_profile.html",title=current_user.username)
