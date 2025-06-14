@@ -1,7 +1,7 @@
 from Project import app,db,bcrypt
-from flask import render_template,flash,redirect,request,url_for
-from Project.forms import registeration_form,login_form
-from Project.models import User
+from flask import render_template,flash,redirect,request,url_for,abort
+from Project.forms import registeration_form,login_form,project_form
+from Project.models import User,Project
 from flask_login import login_user,current_user,login_required,logout_user
 
 @app.route("/")
@@ -33,12 +33,12 @@ def login():
     form=login_form()
     if form.validate_on_submit():
         user=User.query.filter_by(email=form.email.data).first()
-        print(form.category.data)
         if user and bcrypt.check_password_hash(user.password,form.password.data) and user.role==form.category.data[0]:
             login_user(user,remember=False)
             flash("You have been logged in successfully","success")
             return redirect(url_for("home"))
         else:
+            print(bcrypt.check_password_hash(user.password,form.password.data))
             flash("Login unsuccessful check your details","danger")
     return render_template("login.html",title="Login",form=form)
 
@@ -51,10 +51,29 @@ def logout():
 @app.route("/profile")
 @login_required
 def profile():
+    projects=current_user.project
+    print(projects)
     img_src=url_for("static",filename="/profile_pics/"+current_user.profile_picture)
-    return render_template("profile.html",title=current_user.username,img_src=img_src)
+    return render_template("profile.html",title=current_user.username,img_src=img_src,projects=projects)
 
-@app.route("/update_profile")
+@app.route("/profile/update")
 @login_required
 def update_profile():
     return render_template("update_profile.html",title=current_user.username)
+
+@app.route("/project/add",methods=['GET','POST'])
+@login_required
+def add_project():
+    if current_user.role=='student':
+        abort(403)
+    form=project_form()
+    if form.validate_on_submit():
+        post=Project(title=form.title.data,
+                     description=form.description.data,
+                     skills=form.skills.data,
+                     user=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash("A new project has been added","success")
+        return redirect(url_for("profile"))
+    return render_template("add_project.html",title=current_user.username,form=form)

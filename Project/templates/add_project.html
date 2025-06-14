@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+{% block customstyle %}
+        <link rel="stylesheet" href="{{url_for('static',filename='teachersform.css')}}">
+{% endblock customstyle %}
+{% block content %}
+    <div class="outer-container">
+        <div class="container-teacherform">
+            <h1>Add New Project</h1>
+            <form method='POST' id="projectForm" action="">
+                <div class="form-group">
+                    {{form.title.label}}
+                        {% if form.title.errors %}
+                            {{form.title}}
+                            {% for error in form.title.errors %}
+                                <span class="text-danger">{{error}}</span>
+                            {% endfor %}
+                        {% else %}
+                            {{form.title}}
+                        {% endif %}
+                </div>
+                <div class="form-group">
+                    {{form.description.label}}
+                        {% if form.description.errors %}
+                            {{form.description}}
+                            {% for error in form.description.errors %}
+                                <span class="text-danger">{{error}}</span>
+                            {% endfor %}
+                        {% else %}
+                            {{form.description}}
+                        {% endif %}
+                </div>
+                <div class="form-group">
+                    {{ form.hidden_tag() }}
+                    <div class="skills-grp">
+                        {{ form.skills.label() }}
+                        <input type="text" id="skillInput">
+                        <button class="button button-diff add-btn" type="button" onclick="addSkill()">Add</button>
+                        <div class="skills" id="skillsDisplay"></div>
+                    </div>
+
+                    {{ form.skills(id="skills") }}
+                </div>
+                <div>
+                        {{form.submit(class="submit-btn")}}
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="{{url_for('static',filename='teachersform.js')}}"></script>
+{% endblock content %}

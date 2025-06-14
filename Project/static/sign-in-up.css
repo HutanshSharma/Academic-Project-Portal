@@ -9,7 +9,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding-top: 1.3rem;
+    padding: 1.3rem;
 }
 
 .form-group {
@@ -26,10 +26,7 @@ h1 {
     font-size: 1.5rem;
     font-weight: 700;
     text-align: left;
-    background: linear-gradient(to right, #60a5fa, #a855f7);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: #f9fafb;
     margin-bottom: 0.5rem;
 }
 
@@ -54,28 +51,6 @@ input {
     padding: 0.35rem 1rem 0.35rem 1rem;
     font-size: 0.85rem;
     transition: all 0.2s;
-}
-
-.submit-btn {
-    width: 100%;
-    background: linear-gradient(to right, #60a5fa, #a855f7);
-    color: #fff;
-    border: none;
-    border-radius: 0.5rem;
-    padding: 0.5rem;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s;
-}
-
-.submit-btn:hover {
-    opacity: 0.9;
-    transform: translateY(-1px);
-}
-
-.submit-btn:active {
-    transform: translateY(1px);
 }
 
 .change-form {

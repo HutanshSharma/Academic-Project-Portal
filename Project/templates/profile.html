@@ -11,82 +11,57 @@
       </div>
     </div>
 
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-content">
-          <h3>Active Projects</h3>
-          <span class="stat-number">3</span>
+    <div class="proj-grid">
+      <div class="proj-card">
+        <div class="proj-content">
+          <h4>Active Projects</h4>
+          <span class="proj-number">{{current_user.total_projects}}</span>
         </div>
         <p>Currently accepting applications</p>
       </div>
       
-      <div class="stat-card">
-        <div class="stat-content">
-          <h3>Applications</h3>
-          <span class="stat-number">12</span>
+      <div class="proj-card">
+        <div class="proj-content">
+          <h4>Submissions</h4>
+          <span class="proj-number">{{current_user.total_projects_submitted}}</span>
         </div>
         <p>Pending review</p>
       </div>
       
-      <div class="stat-card">
-        <div class="stat-content">
-          <h3>Selected Students</h3>
-          <span class="stat-number">0</span>
+      <div class="proj-card">
+        <div class="proj-content">
+          <h4>Submissions Evaluated</h4>
+          <span class="proj-number">{{current_user.total_projects_evaluated}}</span>
         </div>
-        <p>Currently working</p>
-      </div>
-      
-      <div class="stat-card">
-        <div class="stat-content">
-          <h3>Completed</h3>
-          <span class="stat-number">0</span>
-        </div>
-        <p>Past projects</p>
+        <p>Remarks Given</p>
       </div>
     </div>
 
     <div class="projects-table-container">
       <div class="table-header">
         <h2>Research Projects</h2>
-        <button class="btn-primary" >
-          <i class="fa-solid fa-plus"></i>
-           <a class="workable-button" href="teachersform.html">Add Project</a>
-        </button>
+        <a class="button button-diff" href="{{url_for('add_project')}}">Add Project</a>
       </div>
 
       <div class="table-responsive">
         <table>
           <thead>
             <tr>
-              <th>Project</th>
-              <th>Department</th>
-              <th>Deadline</th>
+              <th>Project's Title</th>
+              <th>Upload Date</th>
               <th>Applications</th>
-              <th>Status</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Machine Learning for Climate Data Analysis</td>
-              <td>Computer Science</td>
-              <td>Apr 15, 2025</td>
-              <td>5 new</td>
-              <td><span class="status-badge active">Active</span></td>
-            </tr>
-            <tr>
-              <td>Calculus Computing Algorithms</td>
-              <td>Maths</td>
-              <td>Apr 30, 2025</td>
-              <td>3 new</td>
-              <td><span class="status-badge active">Active</span></td>
-            </tr>
-            <tr>
-              <td>Sustainable Urban Development</td>
-              <td>Social Science</td>
-              <td>May 15, 2025</td>
-              <td>4 new</td>
-              <td><span class="status-badge active">Active</span></td>
-            </tr>
+              {% for i in projects %}
+              <tr>
+                <td>{{i.title}}</td>
+                <td>{{i.created_at.strftime("%Y-%m-%d")}}</td>
+                <td>{{i.user_count}}</td>
+                <td><a class="btn btn-danger" href="#">Delete</a></td>
+              </tr>
+              {% endfor %}
           </tbody>
         </table>
       </div>

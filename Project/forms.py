@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,PasswordField,SubmitField,FieldList,SelectField,BooleanField
+from wtforms import StringField,PasswordField,SubmitField,FieldList,SelectField,TextAreaField,HiddenField
 from wtforms.validators import DataRequired,Length,EqualTo,ValidationError
 from Project.models import User
 
@@ -32,3 +32,9 @@ class login_form(FlaskForm):
         ('teacher','Teacher'),
     ],validators=[DataRequired()]),min_entries=1)
     submit=SubmitField("Login")
+
+class project_form(FlaskForm):
+    title=StringField("Title",validators=[DataRequired(),Length(2,30)])
+    description=TextAreaField("Description",validators=[DataRequired()])
+    skills=HiddenField('Add the skills required for this project',validators=[DataRequired()])
+    submit=SubmitField("Add Project")

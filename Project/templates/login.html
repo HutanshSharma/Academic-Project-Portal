@@ -1,8 +1,11 @@
 {% extends "layout.html" %}
+{% block customstyle %}
+        <link rel="stylesheet" href="{{url_for('static',filename='sign-in-up.css')}}">
+{% endblock customstyle %}
 {% block content %}
     <div class="container-register">
         <div class="form-group">
-            <form method="POST" >
+            <form method="POST" action="">
                 {{form.hidden_tag()}}
                     <h1>Welcome Back</h1>
                     <div class="input-group">
@@ -33,7 +36,7 @@
                         {% endfor %}
                     </div>
                     <div>
-                        {{form.submit(class="submit-btn")}}
+                        {{form.submit(class="button button-diff")}}
                     </div>
                     <div class="change-form">
                         <span>Already have an account?</span>

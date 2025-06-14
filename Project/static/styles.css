@@ -28,6 +28,7 @@
     margin: 0 auto;
     padding: 0 1rem;
   }
+
   header {
     background-color: var(--color-bg-secondary);
     border-bottom: 1px solid var(--color-border);
@@ -77,6 +78,18 @@
     color: var(--color-text);
     text-decoration: none;
     background-color: var(--color-primary);
+  }
+
+  .button-diff {
+    color: var(--color-text);
+    border: 0;
+    height:2.25rem;
+    padding-top: 0.3rem;
+    background-color: var(--color-primary);
+  }
+
+  .button-diff:hover {
+    background-color: var(--color-primary-hover);
   }
   
  .hero {
@@ -273,23 +286,6 @@
     color: var(--color-text-secondary);
   }
 
-  .btn-primary {
-    background-color: var(--color-primary);
-    color: var(--color-text);
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    border: none;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: background-color 0.2s;
-  }
-  
-  .btn-primary:hover {
-    background-color: var(--color-primary-hover);
-  }
-
   .profile-header {
     margin: 2rem 0 2rem 1rem;
     display: flex;
@@ -306,34 +302,34 @@
     color: var(--color-text-secondary);
   }
   
-  .stats-grid {
+  .proj-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.5rem;
     margin-bottom: 2rem;
   }
   
-  .stat-card {
+  .proj-card {
     background-color: var(--color-bg-secondary);
     padding: 1.5rem;
     border-radius: 0.75rem;
     border: 1px solid var(--color-border);
   }
   
-  .stat-content {
+  .proj-content {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 0.5rem;
   }
   
-  .stat-number {
+  .proj-number {
     font-size: 1.5rem;
     font-weight: bold;
     color: var(--color-primary);
   }
   
-  .stat-card p {
+  .proj-card p {
     color: var(--color-text-secondary);
     font-size: 0.875rem;
   }
@@ -342,6 +338,7 @@
     background-color: var(--color-bg-secondary);
     border-radius: 0.75rem;
     border: 1px solid var(--color-border);
+    margin-bottom: 3rem;
     overflow: hidden;
   }
   
@@ -379,18 +376,6 @@
     color: var(--color-text);
   }
   
-  .status-badge {
-    padding: 0.25rem 0.5rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 500;
-  }
-  
-  .status-badge.active {
-    background-color: var(--color-success);
-    color: var(--color-success-text);
-  }
-  
   input, select, textarea {
     width: 100%;
     padding: 0.5rem 0.75rem;
@@ -406,10 +391,7 @@
     border-color: var(--color-primary);
     box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
   }
-  
-  ::placeholder {
-    color: var(--color-text-secondary);
-  }
+
   .workable-button{
     text-decoration: none;
     color: white;
