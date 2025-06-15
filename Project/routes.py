@@ -4,14 +4,15 @@ from PIL import Image
 from Project import app,db,bcrypt
 from flask import render_template,flash,redirect,request,url_for,abort
 from Project.forms import registeration_form,login_form,project_form,update_profile_form
-from Project.models import User,Project
+from Project.models import User,Project,Project_Taken
 from flask_login import login_user,current_user,login_required,logout_user
 
 
 @app.route("/")
 @app.route("/home")
 def home():
-    return render_template("home.html",title="Home")
+    projects=Project.query.all()
+    return render_template("home.html",title="Home",projects=projects)
 
 
 @app.route("/register",methods=['GET','POST'])
@@ -62,10 +63,13 @@ def logout():
 @app.route("/profile")
 @login_required
 def profile():
-    projects=current_user.project
     img_src=url_for("static",filename="/profile_pics/"+current_user.profile_picture)
-    return render_template("profile.html",title=current_user.username,img_src=img_src,projects=projects)
-
+    if current_user.role=='teacher':
+        projects=current_user.project
+        return render_template("profile_teacher.html",title=current_user.username,img_src=img_src,projects=projects)
+    elif current_user.role=='student':
+        projects=current_user.project_taken
+        return render_template("profile_student.html",title=current_user.username,img_src=img_src,projects=projects)
 
 def save_pic(picture):
     hex_name=secrets.token_hex(8)
@@ -100,6 +104,15 @@ def update_profile():
     return render_template("update_profile.html",title=current_user.username,form=form)
 
 
+def save_file(fname):
+    fname_hex=secrets.token_hex(8)
+    _,fext=os.path.splitext(fname.filename)
+    fname_new=fname_hex+fext
+    path=os.path.join(app.root_path,'static/project_details',fname_new)
+    fname.save(path)
+    return fname_new
+
+
 @app.route("/project/add",methods=['GET','POST'])
 @login_required
 def add_project():
@@ -107,16 +120,18 @@ def add_project():
         abort(403)
     form=project_form()
     if form.validate_on_submit():
+        filename=save_file(form.file_pdf.data)
         post=Project(title=form.title.data,
                      description=form.description.data,
                      skills=form.skills.data,
-                     user=current_user)
+                     user=current_user,
+                     descriptive_pdf=filename)
         current_user.total_projects+=1
         db.session.add(post)
         db.session.commit()
         flash("A new project has been added","success")
         return redirect(url_for("profile"))
-    else:
+    elif form.errors:
         flash("Could not add the project","danger")
     return render_template("project_edit.html",title=current_user.username,form=form,legend="Add New Project")
 
@@ -141,7 +156,7 @@ def update_project(project_id):
         form.title.data=project.title
         form.description.data=project.description
         form.skills.data=project.skills
-    else:
+    elif form.errors:
         flash(f"\"{project_name}\" could not be updated","danger")
     return render_template("project_edit.html",title=current_user.username,form=form,legend="Update Project",id="update")
 
@@ -159,3 +174,49 @@ def delete_project(project_id):
     flash(f"\"{project_name}\" has been deleted successfully","success")
     return redirect(url_for("profile"))
     
+
+@app.route("/project/take/<int:project_id>")
+@login_required
+def take_proj(project_id):
+    if current_user.role=='teacher':
+        abort(403)
+    project=Project.query.get(project_id)
+    if Project_Taken.query.filter_by(project=project,user=current_user).first():
+        flash("Project already taken","danger")
+        return redirect(url_for("home"))
+    project_taken=Project_Taken(project=project,user=current_user)
+    current_user.total_projects_taken+=1
+    project.user_count+=1
+    db.session.add(project_taken)
+    db.session.commit()
+    flash("The Project was taken","success")
+    return redirect(url_for("home"))
+
+
+@app.route("/project/student/remove/<int:project_taken_id>",methods=['GET','POST'])
+@login_required
+def remove_proj_taken(project_taken_id):
+    if current_user.role=='teacher':
+        abort(403)
+    project_taken=Project_Taken.query.get(project_taken_id)
+    project_taken.project.user_count-=1
+    project_taken.user.total_projects_taken-=1
+    project_name=project_taken.project.title.strip()
+    db.session.delete(project_taken)
+    db.session.commit()
+    flash(f"\"{project_name}\"has been removed","success")
+    return redirect(url_for("profile"))
+
+
+@app.route("/project/student/submit/<int:project_taken_id>",methods=['GET','POST'])
+@login_required
+def submit_proj_taken(project_taken_id):
+    project_taken=Project_Taken.query.get(project_taken_id)
+    return render_template("project_submit.html",title=current_user.username)
+
+
+@app.route("/project/details/<int:project_id>",methods=['GET','POST'])
+@login_required
+def project_details(project_id):
+    project=Project.query.get(project_id)
+    return render_template("project_details.html",title=project.title)

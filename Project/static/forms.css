@@ -5,9 +5,8 @@
     --text-color: #cbd5e1;
     --text-color-secondary: #fff;
     --surface-color: #1e293b;
-    --border-color: #333;
+    --border-color: #374151;
     --input-bg: #2d3748;
-    --input-bg-border: #2d3748;
     --hover-color: #2c2c2c;
 }
 
@@ -50,11 +49,10 @@ label {
 input,textarea {
     width: 100%;
     padding: 10px;
-    border: 1px solid var(--border-color);
     border-radius: 4px;
     font-size: 16px;
     background-color: var(--input-bg);
-    border: 1px solid var(--input-bg-border);
+    border: 1px solid var(--border-color);
     color: var(--text-color-secondary);
 }
 
@@ -98,22 +96,23 @@ textarea {
 
 .custom-btn {
     display: inline-block;
-    padding: 0.5rem 1rem;
-    background-color: #0d6efd;
+    font-weight: 75;
+    padding: 1rem 3rem;
+    background-color: var(--input-bg);
     color: white;
-    border: none;
-    border-radius: 0.5rem;
+    border: solid 1px var(--border-color);
+    border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 .custom-btn:hover {
-    background-color: #0b5ed7;
+    background-color: var(--hover-color);
 }
 
 .file-info {
     margin-left: 1rem;
     border: solid 0.05rem;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
+    padding: 1rem 1.25rem;
+    border-radius: 4px;
 }

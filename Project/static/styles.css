@@ -65,7 +65,9 @@
   .button {
     color: var(--color-text-secondary);
     text-decoration: none;
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 2rem;
     padding: 0.125rem 1rem;
     border-radius: 0.5rem;
@@ -84,7 +86,7 @@
     color: var(--color-text);
     border: 0;
     height:2.25rem;
-    padding-top: 0.3rem;
+    margin-left: 0.5rem;
     background-color: var(--color-primary);
   }
 
@@ -92,18 +94,18 @@
     background-color: var(--color-primary-hover);
   }
   
- .hero {
+ .top-section {
     text-align: center;
     max-width: 48rem;
     margin: 3rem auto;
   }
   
-  .hero h1 {
+  .top-section h1 {
     font-size: 2.5rem;
     margin-bottom: 1rem;
   }
   
-  .hero p {
+  .top-section p {
     color: var(--color-text-secondary);
     font-size: 1.125rem;
   }
@@ -115,8 +117,8 @@
     max-width: 64rem;
     margin: 0 auto;
     background-color: var(--color-bg-secondary);
-    padding: 1.5rem;
-    border-radius: 0.5rem;
+    padding: 1rem 3rem 1rem 3rem;
+    border-radius: 1rem;
     border: 1px solid var(--color-border);
     display: flex;
     gap: 1rem;
@@ -128,7 +130,6 @@
     position: relative;
     min-width: 200px;
   }
-  
   
   .search-box input {
     width: 100%;
@@ -147,7 +148,7 @@
     min-width: 150px;
   }
 
-  .project-grid {
+  .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1.5rem;
@@ -168,43 +169,37 @@
   }
   
   .project-image {
-    height: 12rem;
-    overflow: hidden;
+    height: 5rem;
+    width: 5rem;
   }
-  
-  .project-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+
+  .project-profile {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1.5rem;
   }
-  
+
   .project-content {
     padding: 1.5rem;
   }
   
-  .project-meta {
+  .project-user-profile {
     display: flex;
-    justify-content: space-between;
     align-items: center;
     margin-bottom: 0.5rem;
   }
   
-  .department {
+  .uploader {
     color: var(--color-primary);
     font-weight: 500;
   }
   
-  .deadline {
+  .upload-date {
     color: var(--color-text-secondary);
     font-size: 0.875rem;
     display: flex;
     align-items: center;
     gap: 0.25rem;
-  }
-  
-  .project-card h3 {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
   }
   
   .project-card p {
@@ -212,37 +207,33 @@
     margin-bottom: 1rem;
   }
   
-  .requirements h4 {
+  .skills h4 {
     color: var(--color-text);
     margin-bottom: 0.5rem;
     font-size: 0.875rem;
   }
   
-  .requirements ul {
+  .skills ul {
     list-style: none;
     margin-bottom: 1rem;
   }
   
-  .requirements li {
+  .skills li {
     color: var(--color-text-secondary);
     font-size: 0.875rem;
     margin-bottom: 0.25rem;
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
+    background-color: var(--color-bg); 
+    display: inline-block;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+    border: solid 1px var(--color-border);
+    border-radius: 1rem;
   }
   
   .project-footer {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: end;
   }
   
-  .professor {
-    color: var(--color-text-secondary);
-    font-size: 0.875rem;
-  }
-
   .benefits {
     background-color: var(--color-bg-secondary);
     padding: 2rem;

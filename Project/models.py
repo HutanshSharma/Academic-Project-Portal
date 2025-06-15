@@ -31,6 +31,7 @@ class Project(db.Model):
     title=db.Column(db.String(100),nullable=False)
     description=db.Column(db.Text,nullable=False)
     skills=db.Column(db.Text,nullable=False)
+    descriptive_pdf=db.Column(db.String(80),nullable=False,default='No pdf')
     user_count=db.Column(db.Integer,nullable=False,default=0)
     created_at=db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
     created_by=db.Column(db.Integer,db.ForeignKey('user.id'))
@@ -45,7 +46,7 @@ class Submission(db.Model):
     submitted_at=db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
     submission_link=db.Column(db.Text,nullable=False)
     info=db.Column(db.Text)
-    project_id=db.Column(db.Integer,db.ForeignKey('project.id'))
+    project_id=db.Column(db.Integer,db.ForeignKey('project.id'),unique=True)
     student_id=db.Column(db.Integer,db.ForeignKey('user.id'))
     evaluation=db.relationship('Evaluation',backref='submission',lazy=True,cascade="all,delete")
 
@@ -57,7 +58,7 @@ class Evaluation(db.Model):
     score=db.Column(db.Integer,nullable=False)
     feedback=db.Column(db.Text,nullable=False)
     evaluated_at=db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
-    submission_id=db.Column(db.Integer,db.ForeignKey('submission.id'))
+    submission_id=db.Column(db.Integer,db.ForeignKey('submission.id'),unique=True)
     evaluated_by=db.Column(db.Integer,db.ForeignKey('user.id'))
 
     def __repr__(self):
@@ -66,7 +67,7 @@ class Evaluation(db.Model):
 class Project_Taken(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     taken_at=db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
-    project_id=db.Column(db.Integer,db.ForeignKey('project.id'))
+    project_id=db.Column(db.Integer,db.ForeignKey('project.id'),unique=True)
     student_id=db.Column(db.Integer,db.ForeignKey('user.id'))
 
     def __repr__(self):

@@ -6,7 +6,7 @@
     <div class="outer-container">
         <div class="container-teacherform">
             <h1>{{legend}}</h1>
-            <form method='POST' id="projectForm" action="">
+            <form method='POST' id="projectForm" action="" enctype="multipart/form-data">
                 <div class="form-group">
                     {{form.title.label}}
                         {% if form.title.errors %}
@@ -43,6 +43,23 @@
                             <span class="text-danger">{{error}}</span>
                         {% endfor %}
                     {% endif %}
+                </div>
+                <div class="form-group">
+                        {{form.file_pdf.label}}
+                        {{form.file_pdf(id="image",style="display: none;")}}
+                        <label for="image" class="custom-btn">Upload pdf here</label>
+                        <span id="file-name" class="file-info">
+                            {% if id=='update' %}
+                                No file chosen to update
+                            {% else %}
+                                No file chosen
+                            {% endif %}
+                        </span>
+                        {% if form.file_pdf.errors %}
+                            {% for error in form.file_pdf.errors %}
+                                <span class="text-danger">{{error}}</span>
+                            {% endfor %}
+                        {% endif %}
                 </div>
                 <div>
                         {{form.submit(class="submit-btn")}}
