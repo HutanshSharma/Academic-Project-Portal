@@ -3,15 +3,15 @@ import secrets
 from PIL import Image
 from Project import app,db,bcrypt
 from flask import render_template,flash,redirect,request,url_for,abort
-from Project.forms import registeration_form,login_form,project_form,update_profile_form
-from Project.models import User,Project,Project_Taken
+from Project.forms import registeration_form,login_form,project_form,update_profile_form,submit_project
+from Project.models import User,Project,Project_Taken,Submission
 from flask_login import login_user,current_user,login_required,logout_user
 
 
 @app.route("/")
 @app.route("/home")
 def home():
-    projects=Project.query.all()
+    projects=Project.query.order_by(Project.created_at.desc()).all()
     return render_template("home.html",title="Home",projects=projects)
 
 
@@ -66,10 +66,15 @@ def profile():
     img_src=url_for("static",filename="/profile_pics/"+current_user.profile_picture)
     if current_user.role=='teacher':
         projects=current_user.project
-        return render_template("profile_teacher.html",title=current_user.username,img_src=img_src,projects=projects)
+        submissions=[]
+        for i in projects:
+            submission=Submission.query.filter_by(project=i).all()
+            submissions.extend(submission)
+        return render_template("profile_teacher.html",title=current_user.username,img_src=img_src,projects=projects,submissions=submissions)
     elif current_user.role=='student':
         projects=current_user.project_taken
-        return render_template("profile_student.html",title=current_user.username,img_src=img_src,projects=projects)
+        submissions=current_user.submission
+        return render_template("profile_student.html",title=current_user.username,img_src=img_src,projects=projects,submissions=submissions)
 
 def save_pic(picture):
     hex_name=secrets.token_hex(8)
@@ -184,6 +189,9 @@ def take_proj(project_id):
     if Project_Taken.query.filter_by(project=project,user=current_user).first():
         flash("Project already taken","danger")
         return redirect(url_for("home"))
+    if Submission.query.filter_by(project=project,user=current_user).first():
+        flash("Project has already been submitted once. You can retake the project after it has been evaluated.","danger")
+        return redirect(url_for("home"))
     project_taken=Project_Taken(project=project,user=current_user)
     current_user.total_projects_taken+=1
     project.user_count+=1
@@ -211,12 +219,36 @@ def remove_proj_taken(project_taken_id):
 @app.route("/project/student/submit/<int:project_taken_id>",methods=['GET','POST'])
 @login_required
 def submit_proj_taken(project_taken_id):
+    if current_user.role=='teacher':
+        abort(403)
     project_taken=Project_Taken.query.get(project_taken_id)
-    return render_template("project_submit.html",title=current_user.username)
+    form=submit_project()
+    if form.validate_on_submit():
+        submit=Submission(info=form.info.data,
+                          submission_link=form.project_link.data,
+                          user=current_user,
+                          project=project_taken.project
+                          )
+        teacher_name=project_taken.project.user.username.strip()
+        project_taken.user.total_projects_taken-=1
+        project_taken.user.total_projects_submitted+=1
+        project_taken.project.user.total_projects_submitted+=1
+        project_taken.project.user_count-=1
+        print("hello")
+        db.session.delete(project_taken)
+        db.session.add(submit)
+        db.session.commit()
+        flash(f"The project has been submitted successfully to \"{teacher_name}\"","success")
+        return redirect(url_for("profile"))
+    elif form.errors:
+        flash("Project could not be submitted","danger")
+        print(form.errors)
+    return render_template("project_submit.html",title=current_user.username,form=form,legend="Submit Project")
 
 
 @app.route("/project/details/<int:project_id>",methods=['GET','POST'])
-@login_required
 def project_details(project_id):
     project=Project.query.get(project_id)
-    return render_template("project_details.html",title=project.title)
+    img_src=url_for("static",filename="/profile_pics/"+project.user.profile_picture)
+    pdf=url_for("static",filename="/project_details/"+project.descriptive_pdf)
+    return render_template("project_details.html",title=project.title,user=project.user,img_src=img_src,project=project,pdf=pdf)

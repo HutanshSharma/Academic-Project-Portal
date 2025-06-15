@@ -48,10 +48,6 @@
     color: var(--color-text);
   }
   
-  .logo svg {
-    color: var(--color-primary);
-  }
-  
   .logo span {
     font-weight: bold;
     font-size: 1.25rem;
@@ -62,6 +58,12 @@
     gap: 1rem;
   }
   
+  .dashboard h1{
+    margin-top: 1.5rem;
+    color: var(--color-text);
+    margin-bottom: 1.5rem;
+  }
+
   .button {
     color: var(--color-text-secondary);
     text-decoration: none;
@@ -286,7 +288,7 @@
     display: flex;
     margin-left: 5rem;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
     color: var(--color-text-secondary);
   }
   
@@ -393,3 +395,66 @@
     width: 10rem;
     height: 10rem
   }
+
+  .details-head {
+    display: flex;
+    align-items: center;
+  }
+
+  .details-head i {
+    margin-right: 1rem;
+  }
+
+  .details-header {
+    background-color: var(--color-bg-secondary);
+    padding: 0.1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .profile-header-details {
+    margin: 2rem 0 2rem 1rem;
+    display: flex;
+  }
+  
+  .info-header {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text-secondary);
+    padding: 0.1rem 3rem 1rem 3rem;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .info-header h3{
+    color: var(--color-text);
+  }
+
+  .break {
+    background-color: var(--color-text-secondary);
+    height: 0.1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .info-section {
+    margin-top: 2rem;
+  }
+
+  .info-btn {
+    display: inline-block;
+    padding:0.25rem 3rem 0.25rem 3rem;
+    margin: 0;
+    margin-bottom: 1rem;
+  }
+
+  @media screen and (max-width:520px) {
+    .profile-header-details {
+      flex-direction: column;
+    }
+
+    .details {
+      margin-left: 0;
+      margin-top: 1rem;
+    }
+  }
+

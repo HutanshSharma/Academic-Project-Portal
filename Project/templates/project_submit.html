@@ -1,3 +1,41 @@
 {% extends "layout.html" %}
+{% block customstyle %}
+        <link rel="stylesheet" href="{{url_for('static',filename='forms.css')}}">
+{% endblock customstyle %}
 {% block content %}
+    <div class="outer-container">
+        <div class="container-teacherform">
+            <h1>{{legend}}</h1>
+            <form method='POST' id="projectForm" action="" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                <p class="text-danger">Project can only be submitted once</p>
+                <div class="form-group">
+                    {{form.info.label}}
+                        {% if form.info.errors %}
+                            {{form.info}}
+                            {% for error in form.info.errors %}
+                                <span class="text-danger">{{error}}</span>
+                            {% endfor %}
+                        {% else %}
+                            {{form.info}}
+                        {% endif %}
+                </div>
+                <div class="form-group">
+                    {{form.project_link.label}}
+                        {% if form.project_link.errors %}
+                            {{form.project_link}}
+                            {% for error in form.project_link.errors %}
+                                <span class="text-danger">{{error}}</span>
+                            {% endfor %}
+                        {% else %}
+                            {{form.project_link}}
+                        {% endif %}
+                </div>
+                <div>
+                        {{form.submit(class="submit-btn")}}
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="{{url_for('static',filename='forms.js')}}"></script>
 {% endblock content %}

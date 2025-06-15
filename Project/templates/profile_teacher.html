@@ -39,7 +39,7 @@
 
     <div class="projects-table-container">
       <div class="table-header">
-        <h2>Research Projects</h2>
+        <h2>Projects</h2>
         <a class="button button-diff" href="{{url_for('add_project')}}">Add Project</a>
       </div>
 
@@ -49,7 +49,7 @@
             <tr>
               <th>Project's Title</th>
               <th>Upload Date</th>
-              <th>Applications</th>
+              <th>Active Workers</th>
               <th>Update</th>
               <th>Delete</th>
             </tr>
@@ -82,6 +82,37 @@
                       </div>
                     </div>
                 
+                </td>
+              </tr>
+              {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="projects-table-container">
+      <div class="table-header">
+        <h2>Submissions waiting for evaluation</h2>
+      </div>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Project's Title</th>
+              <th>Upload Date</th>
+              <th>Submitted by</th>
+              <th>Submitted on</th>
+              <th>Evaluate</th>
+            </tr>
+          </thead>
+          <tbody>
+              {% for i in submissions %}
+              <tr>
+                <td>{{i.project.title}}</td>
+                <td>{{i.project.created_at.strftime("%Y-%m-%d")}}</td>
+                <td>{{i.user.username}}</td>
+                <td>{{i.submitted_at.strftime("%Y-%m-%d")}}</td>
+                <td><a class="btn btn-outline-success" href="#">Evaluate</a></td>    
                 </td>
               </tr>
               {% endfor %}

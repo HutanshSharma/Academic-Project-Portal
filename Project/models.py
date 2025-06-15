@@ -46,7 +46,7 @@ class Submission(db.Model):
     submitted_at=db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
     submission_link=db.Column(db.Text,nullable=False)
     info=db.Column(db.Text)
-    project_id=db.Column(db.Integer,db.ForeignKey('project.id'),unique=True)
+    project_id=db.Column(db.Integer,db.ForeignKey('project.id'))
     student_id=db.Column(db.Integer,db.ForeignKey('user.id'))
     evaluation=db.relationship('Evaluation',backref='submission',lazy=True,cascade="all,delete")
 
@@ -67,7 +67,7 @@ class Evaluation(db.Model):
 class Project_Taken(db.Model):
     id=db.Column(db.Integer,primary_key=True)
     taken_at=db.Column(db.DateTime,nullable=False,default=datetime.utcnow)
-    project_id=db.Column(db.Integer,db.ForeignKey('project.id'),unique=True)
+    project_id=db.Column(db.Integer,db.ForeignKey('project.id'))
     student_id=db.Column(db.Integer,db.ForeignKey('user.id'))
 
     def __repr__(self):

@@ -39,7 +39,7 @@ class project_form(FlaskForm):
     title=StringField("Title",validators=[DataRequired(),Length(2,30)])
     description=TextAreaField("Description",validators=[DataRequired()])
     skills=HiddenField('Add the skills required for this project',validators=[DataRequired()])
-    file_pdf=FileField("Upload the File (pdf,text) with the project details",validators=[FileAllowed(['pdf','txt'])])
+    file_pdf=FileField("Upload the pdf with the project details",validators=[FileAllowed(['pdf','txt'])])
     submit=SubmitField("Submit")
 
 class update_profile_form(FlaskForm):
@@ -60,4 +60,9 @@ class update_profile_form(FlaskForm):
             user=User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError("This email has already been taken")
+            
+class submit_project(FlaskForm):
+    info=TextAreaField("Briefly Describe your submission",validators=[DataRequired()])
+    project_link=StringField("Enter the link to you Repository",validators=[DataRequired()])
+    submit=SubmitField("Submit Project")
             

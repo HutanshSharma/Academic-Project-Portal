@@ -1,3 +1,58 @@
 {% extends "layout.html" %}
 {% block content %}
+    <main class="container dashboard">
+        <div class="details-head">
+            <i class="fa-solid fa-bookmark fa-lg"></i>
+            <h1>Project's Details</h1>
+        </div>
+        <div class="details-header">
+            <div class="profile-header-details">
+                <img class="rounded-circle account-img img-profile" src="{{img_src}}">
+                <div class="details">
+                    <h2>Uploaded by : {{user.username}}</h2>
+                    <p>Uploader email : {{user.email}}</p>
+                    <p>Uploaded on : {{project.created_at.strftime("%Y-%m-%d")}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-header">
+            <div class="info-section">
+                <h3>Title</h3>
+                <h5>{{project.title}}</h5>
+            </div>
+            <div class="info-section">
+                <h3>Description</h3>
+                <div>{{project.description}}</div>
+            </div>
+            <div class="info-section skills">
+                <h3>Skills Required : </h3>
+                <ul>
+                    {% for i in project.skills.split(',') %}
+                    <li>{{i.strip()}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="info-section">
+                <a class="button button-diff info-btn" href="{{pdf}}" target="_blank">Open pdf with details</a>
+            </div>
+        </div>
+        <div class="proj-grid">
+      <div class="proj-card">
+        <div class="proj-content">
+          <h4>Active Projects</h4>
+          <span class="proj-number">{{project.user_count}}</span>
+        </div>
+        <p>People who have taken the project</p>
+      </div>
+      
+      <div class="proj-card">
+        <div class="proj-content">
+          <h4>Submissions</h4>
+          <span class="proj-number">{{project.submission|length}}</span>
+        </div>
+        <p>Pending review</p>
+      </div>
+    </div>
+    </main>
 {% endblock content %}

@@ -98,12 +98,25 @@
             <tr>
               <th>Project's Title</th>
               <th>Upload Date</th>
-              <th>Teacher</th>
-              <th>Submitted On</th>
+              <th>Uploaded by</th>
+              <th>Submitted on</th>
               <th>Reviews</th>
             </tr>
           </thead>
           <tbody>
+            {% for i in submissions %}
+              <tr>
+                <td>{{i.project.title}}</td>
+                <td>{{i.project.created_at.strftime("%Y-%m-%d")}}</td>
+                <td>{{i.project.user.username}}</td>
+                <td>{{i.submitted_at.strftime("%Y-%m-%d")}}</td>
+                {% if not reviews %}
+                  <td><a class="btn btn-dark" href="#">No Reviews yet</a></td>
+                {% else %}
+                  <td><a class="btn btn-info" href="#">Check Reviews</a></td>
+                {% endif %}
+              </tr>
+            {% endfor %}
           </tbody>
         </table>
       </div>
