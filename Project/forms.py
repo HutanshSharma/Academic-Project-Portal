@@ -1,9 +1,10 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,PasswordField,SubmitField,FieldList,SelectField,TextAreaField,HiddenField
+from wtforms import StringField,PasswordField,SubmitField,FieldList,SelectField,TextAreaField,HiddenField,IntegerRangeField
 from flask_wtf.file import FileField,FileAllowed
 from wtforms.validators import DataRequired,Length,EqualTo,ValidationError
 from Project.models import User
 from flask_login import current_user
+
 
 class registeration_form(FlaskForm):
     username=StringField("Username",validators=[DataRequired(),Length(2,30)])
@@ -26,6 +27,7 @@ class registeration_form(FlaskForm):
         if user:
             raise ValidationError("This email has already been taken")
 
+
 class login_form(FlaskForm):
     email=StringField("Email",validators=[DataRequired()])
     password=PasswordField("Password",validators=[DataRequired()])
@@ -35,12 +37,14 @@ class login_form(FlaskForm):
     ],validators=[DataRequired()]),min_entries=1)
     submit=SubmitField("Login")
 
+
 class project_form(FlaskForm):
-    title=StringField("Title",validators=[DataRequired(),Length(2,30)])
+    title=StringField("Title",validators=[DataRequired(),Length(2,100)])
     description=TextAreaField("Description",validators=[DataRequired()])
     skills=HiddenField('Add the skills required for this project',validators=[DataRequired()])
     file_pdf=FileField("Upload the pdf with the project details",validators=[FileAllowed(['pdf','txt'])])
     submit=SubmitField("Submit")
+
 
 class update_profile_form(FlaskForm):
     username=StringField("Username",validators=[DataRequired(),Length(2,30)])
@@ -60,9 +64,15 @@ class update_profile_form(FlaskForm):
             user=User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError("This email has already been taken")
-            
+
+      
 class submit_project(FlaskForm):
     info=TextAreaField("Briefly Describe your submission",validators=[DataRequired()])
     project_link=StringField("Enter the link to you Repository",validators=[DataRequired()])
     submit=SubmitField("Submit Project")
-            
+
+
+class evaluate_project(FlaskForm):
+    score=IntegerRangeField("Rate this project (1-10)",default=0,validators=[DataRequired()])
+    feedback=TextAreaField("Give feedback here",validators=[DataRequired()])
+    submit=SubmitField("Submit Reviews")    

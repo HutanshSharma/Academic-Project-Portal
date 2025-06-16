@@ -3,8 +3,8 @@ import secrets
 from PIL import Image
 from Project import app,db,bcrypt
 from flask import render_template,flash,redirect,request,url_for,abort
-from Project.forms import registeration_form,login_form,project_form,update_profile_form,submit_project
-from Project.models import User,Project,Project_Taken,Submission
+from Project.forms import registeration_form,login_form,project_form,update_profile_form,submit_project,evaluate_project
+from Project.models import User,Project,Project_Taken,Submission,Evaluation
 from flask_login import login_user,current_user,login_required,logout_user
 
 
@@ -12,7 +12,7 @@ from flask_login import login_user,current_user,login_required,logout_user
 @app.route("/home")
 def home():
     projects=Project.query.order_by(Project.created_at.desc()).all()
-    return render_template("home.html",title="Home",projects=projects)
+    return render_template("home.html",projects=projects)
 
 
 @app.route("/register",methods=['GET','POST'])
@@ -30,7 +30,7 @@ def register():
         db.session.commit()
         flash("Your account has been created successfully","success")
         return redirect(url_for('login'))
-    return render_template("register.html",form=form,title="Register")
+    return render_template("register.html",form=form)
 
 
 @app.route("/login",methods=['GET','POST'])
@@ -50,7 +50,7 @@ def login():
         else:
                 flash("User doesn't exists","danger")
                 return redirect(url_for("register"))
-    return render_template("login.html",title="Login",form=form)
+    return render_template("login.html",form=form)
 
 
 @app.route("/logout")
@@ -66,15 +66,20 @@ def profile():
     img_src=url_for("static",filename="/profile_pics/"+current_user.profile_picture)
     if current_user.role=='teacher':
         projects=current_user.project
+        projects.reverse()
         submissions=[]
         for i in projects:
             submission=Submission.query.filter_by(project=i).all()
             submissions.extend(submission)
-        return render_template("profile_teacher.html",title=current_user.username,img_src=img_src,projects=projects,submissions=submissions)
+        submissions.reverse()
+        evaluation=current_user.evaluation
+        return render_template("profile_teacher.html",img_src=img_src,projects=projects,submissions=submissions,evaluation=evaluation)
     elif current_user.role=='student':
         projects=current_user.project_taken
+        projects.reverse()
         submissions=current_user.submission
-        return render_template("profile_student.html",title=current_user.username,img_src=img_src,projects=projects,submissions=submissions)
+        submissions.reverse()
+        return render_template("profile_student.html",img_src=img_src,projects=projects,submissions=submissions)
 
 def save_pic(picture):
     hex_name=secrets.token_hex(8)
@@ -106,7 +111,7 @@ def update_profile():
     elif request.method=="GET":
         form.username.data=current_user.username
         form.email.data=current_user.email
-    return render_template("update_profile.html",title=current_user.username,form=form)
+    return render_template("update_profile.html",form=form)
 
 
 def save_file(fname):
@@ -125,7 +130,11 @@ def add_project():
         abort(403)
     form=project_form()
     if form.validate_on_submit():
-        filename=save_file(form.file_pdf.data)
+        filename=""
+        if form.file_pdf.data:
+            filename=save_file(form.file_pdf.data)
+        else:
+            filename="No pdf"
         post=Project(title=form.title.data,
                      description=form.description.data,
                      skills=form.skills.data,
@@ -138,7 +147,7 @@ def add_project():
         return redirect(url_for("profile"))
     elif form.errors:
         flash("Could not add the project","danger")
-    return render_template("project_edit.html",title=current_user.username,form=form,legend="Add New Project")
+    return render_template("project_edit.html",form=form,legend="Add New Project")
 
 
 @app.route("/project/update/<int:project_id>",methods=['GET','POST'])
@@ -163,7 +172,7 @@ def update_project(project_id):
         form.skills.data=project.skills
     elif form.errors:
         flash(f"\"{project_name}\" could not be updated","danger")
-    return render_template("project_edit.html",title=current_user.username,form=form,legend="Update Project",id="update")
+    return render_template("project_edit.html",form=form,legend="Update Project",id="update")
 
 
 @app.route("/project/delete/<int:project_id>",methods=['GET','POST'])
@@ -243,7 +252,7 @@ def submit_proj_taken(project_taken_id):
     elif form.errors:
         flash("Project could not be submitted","danger")
         print(form.errors)
-    return render_template("project_submit.html",title=current_user.username,form=form,legend="Submit Project")
+    return render_template("project_submit.html",form=form,legend="Submit Project")
 
 
 @app.route("/project/details/<int:project_id>",methods=['GET','POST'])
@@ -251,4 +260,36 @@ def project_details(project_id):
     project=Project.query.get(project_id)
     img_src=url_for("static",filename="/profile_pics/"+project.user.profile_picture)
     pdf=url_for("static",filename="/project_details/"+project.descriptive_pdf)
-    return render_template("project_details.html",title=project.title,user=project.user,img_src=img_src,project=project,pdf=pdf)
+    return render_template("project_details.html",user=project.user,img_src=img_src,project=project,pdf=pdf)
+
+
+@app.route("/project/evaluate/<int:id>")
+@login_required
+def evaluate(id):
+    submission=Submission.query.get(id)
+    img_src=url_for("static",filename="/profile_pics/"+submission.user.profile_picture)
+    pdf=url_for("static",filename="/project_details/"+submission.project.descriptive_pdf)
+    return render_template("evaluate.html",submission=submission,pdf=pdf,img_src=img_src)
+
+
+@app.route("/project/evaluate/form/<int:id>",methods=["GET","POST"])
+@login_required
+def evaluate_form(id):
+    form=evaluate_project()
+    submission=Submission.query.get(id)
+    if form.validate_on_submit():
+        evaluation=Evaluation(score=form.score.data/10,
+                              feedback=form.feedback.data,
+                              submission=submission,
+                              user=current_user,
+                              project=submission.project
+                              )
+        current_user.total_projects_evaluated+=1
+        submission.user.total_projects_evaluated+=1
+        db.session.add(evaluation)
+        db.session.commit()
+        flash("You reviews have been submitted","success")
+        return redirect(url_for("profile"))
+    return render_template("evaluate_form.html",legend="Reviews",form=form)
+
+

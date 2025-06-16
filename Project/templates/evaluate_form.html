@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+{% block customstyle %}
+        <link rel="stylesheet" href="{{url_for('static',filename='forms.css')}}">
+{% endblock customstyle %}
+{% block content %}
+    <div class="outer-container">
+        <div class="container-teacherform">
+            <h1>{{legend}}</h1>
+            <form method='POST' id="projectForm" action="">
+                {{form.hidden_tag()}}
+                <div class="form-group">
+                    {{form.score.label(class="score-label")}}
+                        {% if form.score.errors %}
+                            {{form.score(id="page-score",class="score-getter")}}
+                            {% for error in form.score.errors %}
+                                <span class="text-danger">{{error}}</span>
+                            {% endfor %}
+                        {% else %}
+                            {{form.score(id="page-score",class="score-getter")}}
+                        {% endif %}
+                    <div class="dis">
+                        <div class="score-display">Current-score :  </div>
+                        <div id="score-output" class="score-display">0</div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{form.feedback.label}}
+                        {% if form.feedback.errors %}
+                            {{form.feedback}}
+                            {% for error in form.feedback.errors %}
+                                <span class="text-danger">{{error}}</span>
+                            {% endfor %}
+                        {% else %}
+                            {{form.feedback}}
+                        {% endif %}
+                </div>
+                <div>
+                        {{form.submit(class="submit-btn")}}
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="{{url_for('static',filename='forms.js')}}"></script>
+{% endblock content %}

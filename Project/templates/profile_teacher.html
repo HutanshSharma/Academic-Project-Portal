@@ -112,10 +112,43 @@
                 <td>{{i.project.created_at.strftime("%Y-%m-%d")}}</td>
                 <td>{{i.user.username}}</td>
                 <td>{{i.submitted_at.strftime("%Y-%m-%d")}}</td>
-                <td><a class="btn btn-outline-success" href="#">Evaluate</a></td>    
+                <td><a class="btn btn-outline-success" href="{{url_for('evaluate',id=i.id)}}">Evaluate</a></td>    
                 </td>
               </tr>
               {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="projects-table-container">
+      <div class="table-header">
+        <h2>Evaluated Project</h2>
+      </div>
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              <th>Project's Title</th>
+              <th>Submitted on</th>
+              <th>Submitted by</th>
+              <th>Evaluated on</th>
+              <th>Reviews given</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tbody>
+              {% for i in evaluation %}
+              <tr>
+                <td>{{i.project.title}}</td>
+                <td>{{i.project.created_at.strftime("%Y-%m-%d")}}</td>
+                <td>{{i.submission.user.username}}</td>
+                <td>{{i.submission.submitted_at.strftime("%Y-%m-%d")}}</td>
+                <td><a class="btn btn-outline-info" href="#">See Reviews given</a></td>    
+                </td>
+              </tr>
+              {% endfor %}
+          </tbody>
           </tbody>
         </table>
       </div>

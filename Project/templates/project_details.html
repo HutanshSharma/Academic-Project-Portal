@@ -34,7 +34,11 @@
                 </ul>
             </div>
             <div class="info-section">
-                <a class="button button-diff info-btn" href="{{pdf}}" target="_blank">Open pdf with details</a>
+                {% if project.descriptive_pdf == "No pdf" %}
+                    <a class="btn btn-dark info-btn" href="{{url_for('project_details',project_id=project.id)}}" target="_blank">No pdf uploaded by the teacher</a>
+                {% else %}
+                    <a class="button button-diff info-btn" href="{{pdf}}" target="_blank">Open pdf with details</a>
+                {% endif %}
             </div>
         </div>
         <div class="proj-grid">
