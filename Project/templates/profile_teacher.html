@@ -25,7 +25,7 @@
           <h4>Submissions</h4>
           <span class="proj-number">{{current_user.total_projects_submitted}}</span>
         </div>
-        <p>Pending review</p>
+        <p>Project Submissions</p>
       </div>
       
       <div class="proj-card">
@@ -92,7 +92,7 @@
 
     <div class="projects-table-container">
       <div class="table-header">
-        <h2>Submissions waiting for evaluation</h2>
+        <h2>Submissions</h2>
       </div>
       <div class="table-responsive">
         <table>
@@ -112,7 +112,11 @@
                 <td>{{i.project.created_at.strftime("%Y-%m-%d")}}</td>
                 <td>{{i.user.username}}</td>
                 <td>{{i.submitted_at.strftime("%Y-%m-%d")}}</td>
-                <td><a class="btn btn-outline-success" href="{{url_for('evaluate',id=i.id)}}">Evaluate</a></td>    
+                {% if i.evaluation %}
+                  <td><a class="btn btn-dark" >Evaluated</a></td>
+                {% else %}
+                  <td><a class="btn btn-outline-success" href="{{url_for('evaluate',id=i.id)}}">Evaluate</a></td>
+                {% endif %}    
                 </td>
               </tr>
               {% endfor %}
@@ -123,7 +127,7 @@
 
     <div class="projects-table-container">
       <div class="table-header">
-        <h2>Evaluated Project</h2>
+        <h2>Evaluated Projects</h2>
       </div>
       <div class="table-responsive">
         <table>
@@ -144,7 +148,7 @@
                 <td>{{i.project.created_at.strftime("%Y-%m-%d")}}</td>
                 <td>{{i.submission.user.username}}</td>
                 <td>{{i.submission.submitted_at.strftime("%Y-%m-%d")}}</td>
-                <td><a class="btn btn-outline-info" href="#">See Reviews given</a></td>    
+                <td><a class="btn btn-outline-info" href="{{url_for('reviews',id=i.id)}}">See Reviews given</a></td>    
                 </td>
               </tr>
               {% endfor %}

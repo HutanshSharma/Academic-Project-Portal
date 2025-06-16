@@ -3,7 +3,7 @@ import secrets
 from PIL import Image
 from Project import app,db,bcrypt
 from flask import render_template,flash,redirect,request,url_for,abort
-from Project.forms import registeration_form,login_form,project_form,update_profile_form,submit_project,evaluate_project
+from Project.forms import registeration_form,login_form,project_form,update_profile_form,submit_project,evaluate_project,search_projects
 from Project.models import User,Project,Project_Taken,Submission,Evaluation
 from flask_login import login_user,current_user,login_required,logout_user
 
@@ -11,9 +11,10 @@ from flask_login import login_user,current_user,login_required,logout_user
 @app.route("/")
 @app.route("/home")
 def home():
-    projects=Project.query.order_by(Project.created_at.desc()).all()
-    return render_template("home.html",projects=projects)
-
+    page=request.args.get('page',1,type=int)
+    form=search_projects()
+    projects=Project.query.order_by(Project.created_at.desc()).paginate(page=page,max_per_page=6)
+    return render_template("home.html",projects=projects,page=page,form=form)
 
 @app.route("/register",methods=['GET','POST'])
 def register():
@@ -182,6 +183,17 @@ def delete_project(project_id):
         abort(403)
     project=Project.query.get(project_id)
     project.user.total_projects-=1
+    if project.evaluation:
+        project.user.total_projects_evaluated-=len(project.evaluation)
+        for i in project.evaluation:
+            i.submission.user.total_projects_evaluated-=1
+    if project.submission:
+        project.user.total_projects_submitted-=len(project.submission)
+        for i in project.submission:
+            i.user.total_projects_submitted-=1
+    if project.project_taken_by:
+        for i in project.project_taken_by:
+            i.user.total_projects_taken-=1
     project_name=project.title.strip()
     db.session.delete(project)
     db.session.commit()
@@ -199,8 +211,10 @@ def take_proj(project_id):
         flash("Project already taken","danger")
         return redirect(url_for("home"))
     if Submission.query.filter_by(project=project,user=current_user).first():
-        flash("Project has already been submitted once. You can retake the project after it has been evaluated.","danger")
-        return redirect(url_for("home"))
+        submission=Submission.query.filter_by(project=project,user=current_user).first()
+        if not Evaluation.query.filter_by(project=project,submission=submission).first():
+            flash("Project has already been submitted once. You can retake the project after it has been evaluated.","danger")
+            return redirect(url_for("home"))
     project_taken=Project_Taken(project=project,user=current_user)
     current_user.total_projects_taken+=1
     project.user_count+=1
@@ -292,4 +306,13 @@ def evaluate_form(id):
         return redirect(url_for("profile"))
     return render_template("evaluate_form.html",legend="Reviews",form=form)
 
+
+@app.route("/project/reviews/<int:id>")
+@login_required
+def reviews(id):
+    evaluation=Evaluation.query.get(id)
+    submission=evaluation.submission
+    img_src=url_for("static",filename="/profile_pics/"+evaluation.user.profile_picture)
+    pdf=url_for("static",filename="/project_details/"+submission.project.descriptive_pdf)
+    return render_template("reviews.html",evaluation=evaluation,submission=submission,img_src=img_src,pdf=pdf)
 

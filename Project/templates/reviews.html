@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+{% block content %}
+    <main class="container dashboard">
+        <div class="details-head">
+            <i class="fa-solid fa-user fa-2x"></i>
+            <h1>Evaluated By</h1>
+        </div>
+        <div class="details-header">
+            <div class="profile-header-details">
+                <img class="rounded-circle account-img img-profile" src="{{img_src}}">
+                <div class="details">
+                    <h2>Evaluated by : {{evaluation.user.username}}</h2>
+                    <p>Evaluator email : {{evaluation.user.email}}</p>
+                    <p>Evaluated on : {{evaluation.evaluated_at.strftime("%Y-%m-%d")}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="details-head">
+            <i class="fa-regular fa-star fa-2x"></i>
+            <h1>Reviews</h1>
+        </div>
+        <div class="info-header">
+            <div class="info-section">
+                <h3>Score</h3>
+                <div>The teacher gave you : {{evaluation.score}}/10</div>
+            </div>
+            <div class="info-section">
+                <h3>Remarks</h3>
+                <div style="margin-bottom: 1rem;">{{evaluation.feedback}}</div>
+            </div>
+        </div>
+        <div class="details-head">
+            <i class="fa-solid fa-circle-info fa-2x"></i>
+            <h1>Submission Details</h1>
+        </div>
+        <div class="info-header">
+            <div class="info-section">
+                <h3>Description</h3>
+                <div>{{submission.info}}</div>
+            </div>
+            <div class="info-section">
+            <a class="btn btn-info info-btn" href="{{submission.submission_link}}">Repository Link</a>
+            </div>
+        </div>
+        <div class="details-head">
+            <i class="fa-solid fa-bookmark fa-lg"></i>
+            <h1>Project's Details</h1>
+        </div>
+        <div class="info-header">
+            <div class="info-section">
+                <h3>Title</h3>
+                <h5>{{submission.project.title}}</h5>
+            </div>
+            <div class="info-section">
+                <h3>Description</h3>
+                <div>{{submission.project.description}}</div>
+            </div>
+            <div class="info-section skills">
+                <h3>Skills Required : </h3>
+                <ul>
+                    {% for i in submission.project.skills.split(',') %}
+                    <li>{{i.strip()}}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="info-section">
+                {% if submission.project.descriptive_pdf == "No pdf" %}
+                    <a class="btn btn-dark info-btn" href="{{url_for('project_details',project_id=submission.project.id)}}" target="_blank">No pdf uploaded by the teacher</a>
+                {% else %}
+                    <a class="button button-diff info-btn" href="{{pdf}}" target="_blank">Open pdf with details</a>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+{% endblock content %}

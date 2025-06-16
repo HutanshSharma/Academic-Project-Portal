@@ -111,6 +111,7 @@ nav {
   color: var(--color-text-secondary);
   font-size: 1.125rem;
 }
+
 .search {
   margin-bottom: 2rem;
 }
@@ -127,17 +128,14 @@ nav {
   flex-wrap: wrap;
 }
 
-.search-box {
-  flex: 1;
-  position: relative;
-  min-width: 200px;
+.search-here {
+  display: flex;
 }
 
-.search-box input {
+.search-input {
   width: 100%;
   background-color: var(--color-bg);
   border: 1px solid var(--color-border);
-  border-radius: 0.5rem;
   color: var(--color-text);
 }
 
@@ -154,7 +152,7 @@ select {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
-  margin-bottom: 4rem;
+  margin-bottom: 2rem;
 }
 
 .project-card {
@@ -456,5 +454,20 @@ input:focus, select:focus, textarea:focus {
     margin-left: 0;
     margin-top: 1rem;
   }
+}
+
+.paginate {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+.paginate a {
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+}
+
+.paginate p {
+  margin: 0 0.25rem 0 0.25rem;
 }
 

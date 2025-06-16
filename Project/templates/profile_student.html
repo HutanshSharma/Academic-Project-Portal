@@ -25,7 +25,7 @@
           <h4>Submissions</h4>
           <span class="proj-number">{{current_user.total_projects_submitted}}</span>
         </div>
-        <p>Pending review by the teacher</p>
+        <p>Projects submiited to the teacher</p>
       </div>
       
       <div class="proj-card">
@@ -110,10 +110,10 @@
                 <td>{{i.project.created_at.strftime("%Y-%m-%d")}}</td>
                 <td>{{i.project.user.username}}</td>
                 <td>{{i.submitted_at.strftime("%Y-%m-%d")}}</td>
-                {% if not reviews %}
-                  <td><a class="btn btn-dark" href="#">No Reviews yet</a></td>
+                {% if not i.evaluation %}
+                  <td><a class="btn btn-dark">No Reviews yet</a></td>
                 {% else %}
-                  <td><a class="btn btn-info" href="#">Check Reviews</a></td>
+                  <td><a class="btn btn-success" href="{{url_for('reviews',id=i.evaluation[0].id)}}">Check Reviews</a></td>
                 {% endif %}
               </tr>
             {% endfor %}
