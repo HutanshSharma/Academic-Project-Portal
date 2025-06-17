@@ -36,6 +36,15 @@ function addSkillsToDisplay(){
   updateDisplay();
 }
 
+const inputtaken=document.getElementById("skillInput");
+
+inputtaken.addEventListener("keydown",function(event) {
+  if(event.key==="Enter") {
+    event.preventDefault();
+    addSkill();
+  }
+});
+
 function addSkill() {
     const input=document.getElementById("skillInput");
     const skill=input.value.trim();

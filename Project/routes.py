@@ -3,7 +3,6 @@ import secrets
 from PIL import Image
 from Project import app,db,bcrypt
 from flask import render_template,flash,redirect,request,url_for,abort
-from urllib.parse import urlparse
 from Project.forms import registeration_form,login_form,project_form,update_profile_form,submit_project,evaluate_project,search_projects
 from Project.models import User,Project,Project_Taken,Submission,Evaluation
 from flask_login import login_user,current_user,login_required,logout_user
@@ -135,6 +134,10 @@ def update_profile():
     if form.validate_on_submit():
         if form.image.data:
             file_name=save_pic(form.image.data)
+            if current_user.profile_picture!="default.png":
+                path=os.path.join(app.root_path,'static/profile_pics',current_user.profile_picture)
+                if os.path.exists(path):
+                    os.remove(path)
             current_user.profile_picture=file_name
             db.session.commit()
         if current_user.username!=form.username.data or current_user.email!=form.email.data:
@@ -195,16 +198,24 @@ def update_project(project_id):
     project_name=project.title.strip()
     src=request.args.get("act")
     if form.validate_on_submit():
+        if form.file_pdf.data:
+            file_name=save_file(form.file_pdf.data)
+            if project.descriptive_pdf!="No pdf":
+                path=os.path.join(app.root_path,'static/project_details',project.descriptive_pdf)
+                if os.path.exists(path):
+                    os.remove(path)
+            project.descriptive_pdf=file_name
+            db.session.commit()
         if form.title.data!=project.title or form.description.data!=project.description or form.skills.data!=project.skills:
             project.title=form.title.data
             project.description=form.description.data
             project.skills=form.skills.data
             db.session.commit()
-            flash(f"\"{project_name}\" has been updated successfully","success")
-            if src:
-                return redirect(url_for("more_info"))
-            else:
-                return redirect(url_for("profile"))   
+        flash(f"\"{project_name}\" has been updated successfully","success")
+        if src:
+            return redirect(url_for("more_info"))
+        else:
+            return redirect(url_for("profile"))   
     elif request.method=='GET':
         form.title.data=project.title
         form.description.data=project.description

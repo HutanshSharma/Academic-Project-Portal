@@ -48,9 +48,10 @@ header {
   color: var(--color-text);
 }
 
-.logo span {
+.logo a {
   font-weight: bold;
   font-size: 1.25rem;
+  color: var(--color-text)
 }
 
 nav {
