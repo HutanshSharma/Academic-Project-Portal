@@ -1,0 +1,20 @@
+{% extends "more-info-layout.html" %}
+{% block label %}Evaluated Projects{% endblock label %}
+{% block headings %}
+    <th>Project's Title</th>
+    <th>Submitted on</th>
+    <th>Submitted by</th>
+    <th>Evaluated on</th>
+    <th>Reviews given</th>
+{% endblock headings %}
+{% block data %}
+    {% for i in evaluation %}
+        <tr>
+            <td>{{i.project.title}}</td>
+            <td>{{i.project.created_at.strftime("%Y-%m-%d")}}</td>
+            <td>{{i.submission.user.username}}</td>
+            <td>{{i.submission.submitted_at.strftime("%Y-%m-%d")}}</td>
+            <td><a class="btn btn-outline-info" href="{{url_for('reviews',id=i.id)}}">See Reviews given</a></td>
+        </tr>
+    {% endfor %}
+{% endblock data %}

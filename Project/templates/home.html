@@ -12,20 +12,15 @@
           {{form.hidden_tag()}}
           <div class="search-here">
             <div class="search-category">
-              {% for i in form.category %}
-                <select name="{{ i.name }}" id="{{ i.id }}">
-                  <option value="" disabled selected>{{ i.label.text }}</option>
-                  {% for val, label in i.choices %}
-                    <option value="{{ val }}">{{ label }}</option>
-                  {% endfor %}
-                </select>
-              {% endfor %}
+                {% for i in form.category %}
+                  <span>{{i()}}</span>
+                {% endfor %}
             </div>
             <div class="search-box">
               {{form.search(placeholder=form.search.label.text,class="search-input")}}
             </div>
-            <div class="search-btn">
-              {{form.submit}}
+            <div>
+              {{form.submit(class="search-btn button button-diff")}}
             </div>
           </div>
         </form>
@@ -61,7 +56,7 @@
               <div class="project-footer">
                 <a class="button button-diff" href="{{url_for('project_details',project_id=project.id)}}">Details</a>
                 {% if current_user.role=='student' %}
-                <a class="button button-diff" href="{{url_for('take_proj',project_id=project.id)}}">Apply Now</a>
+                <a class="button button-diff" href="{{url_for('take_proj',project_id=project.id,page=request.args.get('page'))}}">Apply Now</a>
                 {% endif %}
               </div> 
           </div>
@@ -70,17 +65,19 @@
       </div>
     </section>
     <div class="paginate">
-      {% for i in projects.iter_pages(left_edge=1, right_edge=1,left_current=1,right_current=1) %}
-        {% if i %}
-          {% if i==page %}
-            <a class="btn btn-info" href="{{url_for('home',page=i)}}">{{i}}</a>
+      {% if page %}
+        {% for i in projects.iter_pages(left_edge=1, right_edge=1,left_current=1,right_current=1) %}
+          {% if i %}
+            {% if i==page %}
+              <a class="btn btn-info" href="{{url_for('home',page=i)}}">{{i}}</a>
+            {% else %}
+              <a class="btn btn-outline-info" href="{{url_for('home',page=i)}}">{{i}}</a>
+            {% endif %}
           {% else %}
-            <a class="btn btn-outline-info" href="{{url_for('home',page=i)}}">{{i}}</a>
+            <p>...</p>
           {% endif %}
-        {% else %}
-          <p>...</p>
-        {% endif %}
-      {% endfor %}
+        {% endfor %}
+      {% endif %}
     </div>
     <section class="benefits">
       <h2>Why Join Research Projects?</h2>

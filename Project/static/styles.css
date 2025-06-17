@@ -120,23 +120,44 @@ nav {
   max-width: 64rem;
   margin: 0 auto;
   background-color: var(--color-bg-secondary);
-  padding: 1rem 3rem 1rem 3rem;
+  padding: 1rem 2rem;
   border-radius: 1rem;
   border: 1px solid var(--color-border);
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
 }
 
 .search-here {
   display: flex;
+  width:100%
+}
+
+.search-category {
+  flex: 0 0 20%;
+}
+
+.search-box {
+  flex: 1 1 60%;
 }
 
 .search-input {
-  width: 100%;
+  width:100%;
   background-color: var(--color-bg);
   border: 1px solid var(--color-border);
+  border-radius: 0;
   color: var(--color-text);
+}
+
+.search-btn {
+  flex: 0 0 20%;
+  height: 100%;
+  border-radius: 0 1rem 1rem 0;
+  padding: 0 1rem;
+  margin-left: 0;
+}
+
+
+.search-category select{
+  border-radius: 1rem 0 0 1rem;
+  min-width: 100%;
 }
 
 select {
@@ -326,8 +347,21 @@ select {
   background-color: var(--color-bg-secondary);
   border-radius: 0.75rem;
   border: 1px solid var(--color-border);
-  margin-bottom: 3rem;
   overflow: hidden;
+}
+
+.projects-table-outer {
+  margin-bottom: 2rem;
+}
+
+.position-btn{
+  margin-top: 1rem;
+  margin-right: 1rem;
+}
+
+.outer-position-btn {
+  display: flex;
+  justify-content: end;
 }
 
 .table-header {
@@ -471,3 +505,6 @@ input:focus, select:focus, textarea:focus {
   margin: 0 0.25rem 0 0.25rem;
 }
 
+.more-info-outer {
+  margin: 2rem;
+}

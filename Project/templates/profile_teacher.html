@@ -37,6 +37,7 @@
       </div>
     </div>
 
+    <div class="projects-table-outer">
     <div class="projects-table-container">
       <div class="table-header">
         <h2>Projects</h2>
@@ -89,7 +90,14 @@
         </table>
       </div>
     </div>
-
+    <div class="outer-position-btn">
+    {% if plm %}
+      <a class="btn btn-outline-primary position-btn" href="{{url_for('more_info')}}">Load More</a>
+    {% endif %}
+    </div>
+    </div>
+    
+    <div class="projects-table-outer">
     <div class="projects-table-container">
       <div class="table-header">
         <h2>Submissions</h2>
@@ -124,7 +132,14 @@
         </table>
       </div>
     </div>
+    <div class="outer-position-btn">
+    {% if slm %}
+      <a class="btn btn-outline-primary position-btn" href="{{url_for('more_info_submission')}}">Load More</a>
+    {% endif %}
+    </div>
+    </div>
 
+    <div class="projects-table-outer">
     <div class="projects-table-container">
       <div class="table-header">
         <h2>Evaluated Projects</h2>
@@ -148,8 +163,7 @@
                 <td>{{i.project.created_at.strftime("%Y-%m-%d")}}</td>
                 <td>{{i.submission.user.username}}</td>
                 <td>{{i.submission.submitted_at.strftime("%Y-%m-%d")}}</td>
-                <td><a class="btn btn-outline-info" href="{{url_for('reviews',id=i.id)}}">See Reviews given</a></td>    
-                </td>
+                <td><a class="btn btn-outline-info" href="{{url_for('reviews',id=i.id)}}">See Reviews given</a></td>
               </tr>
               {% endfor %}
           </tbody>
@@ -157,5 +171,12 @@
         </table>
       </div>
     </div>
+    <div class="outer-position-btn">
+    {% if elm %}
+      <a class="btn btn-outline-primary position-btn" href="{{url_for('more_info_evaluation')}}">Load More</a>
+    {% endif %}
+    </div>
+    </div>
+
   </main>
 {% endblock content %}

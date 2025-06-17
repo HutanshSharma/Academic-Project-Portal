@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="more-info-outer">
+    <div class="projects-table-container">
+      <div class="table-header">
+        <h2>{% block label %}{% endblock label %}</h2>
+        {% if title=='Projects' %}
+          <a class="button button-diff" href="{{url_for('add_project')}}">Add Project</a>
+        {% endif %}
+      </div>
+
+      <div class="table-responsive">
+        <table>
+          <thead>
+            <tr>
+              {% block headings%}
+              {% endblock headings%}
+            </tr>
+          </thead>
+          <tbody>
+              {% block data %}
+              {% endblock data %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+</div>
+{% endblock content %}

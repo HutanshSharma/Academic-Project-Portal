@@ -3,16 +3,32 @@ import secrets
 from PIL import Image
 from Project import app,db,bcrypt
 from flask import render_template,flash,redirect,request,url_for,abort
+from urllib.parse import urlparse
 from Project.forms import registeration_form,login_form,project_form,update_profile_form,submit_project,evaluate_project,search_projects
 from Project.models import User,Project,Project_Taken,Submission,Evaluation
 from flask_login import login_user,current_user,login_required,logout_user
 
 
 @app.route("/")
-@app.route("/home")
+@app.route("/home",methods=['GET','POST'])
 def home():
     page=request.args.get('page',1,type=int)
     form=search_projects()
+    if form.validate_on_submit():
+        if form.category.data[0]=='teacher_name':
+            projects=Project.query.filter(Project.user.has(User.username==form.search.data)).order_by(Project.created_at.desc()).all()
+            return render_template("home.html",projects=projects,form=form)
+        elif form.category.data[0]=='project_name':
+            projects=Project.query.filter_by(title=form.search.data).all()
+            return render_template("home.html",projects=projects,form=form)
+        elif form.category.data[0]=='skill':
+            skill=form.search.data
+            list=Project.query.order_by(Project.created_at.desc()).all()
+            projects=[]
+            for i in list:
+                if skill in i.skills:
+                    projects.append(i)
+            return render_template("home.html",projects=projects,form=form)
     projects=Project.query.order_by(Project.created_at.desc()).paginate(page=page,max_per_page=6)
     return render_template("home.html",projects=projects,page=page,form=form)
 
@@ -66,21 +82,39 @@ def logout():
 def profile():
     img_src=url_for("static",filename="/profile_pics/"+current_user.profile_picture)
     if current_user.role=='teacher':
+        project_loadmore=False
+        submission_loadmore=False
+        evaluation_loadmore=False
         projects=current_user.project
-        projects.reverse()
+        if len(projects)>5:
+            project_loadmore=True
         submissions=[]
         for i in projects:
             submission=Submission.query.filter_by(project=i).all()
             submissions.extend(submission)
+        projects.reverse()
         submissions.reverse()
+        if len(submissions)>5:
+            submission_loadmore=True
         evaluation=current_user.evaluation
-        return render_template("profile_teacher.html",img_src=img_src,projects=projects,submissions=submissions,evaluation=evaluation)
+        evaluation.reverse()
+        if len(evaluation)>5:
+            evaluation_loadmore=True
+        return render_template("profile_teacher.html",img_src=img_src,projects=projects[:5],submissions=submissions[:5],
+                               evaluation=evaluation[:5],plm=project_loadmore,slm=submission_loadmore,elm=evaluation_loadmore)
     elif current_user.role=='student':
+        project_loadmore=False
+        submission_loadmore=False
         projects=current_user.project_taken
         projects.reverse()
+        if len(projects)>5:
+            project_loadmore=True
         submissions=current_user.submission
         submissions.reverse()
-        return render_template("profile_student.html",img_src=img_src,projects=projects,submissions=submissions)
+        if len(submissions)>5:
+            submission_loadmore=True
+        return render_template("profile_student.html",img_src=img_src,projects=projects[:5],submissions=submissions[:5],plm=project_loadmore,slm=submission_loadmore)
+
 
 def save_pic(picture):
     hex_name=secrets.token_hex(8)
@@ -159,6 +193,7 @@ def update_project(project_id):
     form=project_form()
     project=Project.query.get(project_id)
     project_name=project.title.strip()
+    src=request.args.get("act")
     if form.validate_on_submit():
         if form.title.data!=project.title or form.description.data!=project.description or form.skills.data!=project.skills:
             project.title=form.title.data
@@ -166,7 +201,10 @@ def update_project(project_id):
             project.skills=form.skills.data
             db.session.commit()
             flash(f"\"{project_name}\" has been updated successfully","success")
-            return redirect(url_for("profile"))   
+            if src:
+                return redirect(url_for("more_info"))
+            else:
+                return redirect(url_for("profile"))   
     elif request.method=='GET':
         form.title.data=project.title
         form.description.data=project.description
@@ -197,8 +235,12 @@ def delete_project(project_id):
     project_name=project.title.strip()
     db.session.delete(project)
     db.session.commit()
+    src=request.args.get("act")
     flash(f"\"{project_name}\" has been deleted successfully","success")
-    return redirect(url_for("profile"))
+    if src:
+        return redirect(url_for("more_info"))
+    else:
+        return redirect(url_for("profile"))
     
 
 @app.route("/project/take/<int:project_id>")
@@ -209,19 +251,22 @@ def take_proj(project_id):
     project=Project.query.get(project_id)
     if Project_Taken.query.filter_by(project=project,user=current_user).first():
         flash("Project already taken","danger")
-        return redirect(url_for("home"))
+        page=request.args.get("page",1,type=int)
+        return redirect(url_for("home",page=page))
     if Submission.query.filter_by(project=project,user=current_user).first():
         submission=Submission.query.filter_by(project=project,user=current_user).first()
         if not Evaluation.query.filter_by(project=project,submission=submission).first():
             flash("Project has already been submitted once. You can retake the project after it has been evaluated.","danger")
-            return redirect(url_for("home"))
+            page=request.args.get("page",1,type=int)
+            return redirect(url_for("home",page=page))
     project_taken=Project_Taken(project=project,user=current_user)
     current_user.total_projects_taken+=1
     project.user_count+=1
     db.session.add(project_taken)
     db.session.commit()
     flash("The Project was taken","success")
-    return redirect(url_for("home"))
+    page=request.args.get("page",1,type=int)
+    return redirect(url_for("home",page=page))
 
 
 @app.route("/project/student/remove/<int:project_taken_id>",methods=['GET','POST'])
@@ -235,8 +280,12 @@ def remove_proj_taken(project_taken_id):
     project_name=project_taken.project.title.strip()
     db.session.delete(project_taken)
     db.session.commit()
-    flash(f"\"{project_name}\"has been removed","success")
-    return redirect(url_for("profile"))
+    flash(f"\"{project_name}\" has been removed","success")
+    src=request.args.get('act')
+    if src:
+        return redirect(url_for("more_info_taken"))
+    else:
+        return redirect(url_for("profile"))
 
 
 @app.route("/project/student/submit/<int:project_taken_id>",methods=['GET','POST'])
@@ -246,6 +295,7 @@ def submit_proj_taken(project_taken_id):
         abort(403)
     project_taken=Project_Taken.query.get(project_taken_id)
     form=submit_project()
+    src=request.args.get("act")
     if form.validate_on_submit():
         submit=Submission(info=form.info.data,
                           submission_link=form.project_link.data,
@@ -257,12 +307,14 @@ def submit_proj_taken(project_taken_id):
         project_taken.user.total_projects_submitted+=1
         project_taken.project.user.total_projects_submitted+=1
         project_taken.project.user_count-=1
-        print("hello")
         db.session.delete(project_taken)
         db.session.add(submit)
         db.session.commit()
         flash(f"The project has been submitted successfully to \"{teacher_name}\"","success")
-        return redirect(url_for("profile"))
+        if src:
+            return redirect(url_for("more_info_taken"))
+        else:
+            return redirect(url_for("profile"))
     elif form.errors:
         flash("Project could not be submitted","danger")
         print(form.errors)
@@ -291,6 +343,7 @@ def evaluate(id):
 def evaluate_form(id):
     form=evaluate_project()
     submission=Submission.query.get(id)
+    src=request.args.get("act")
     if form.validate_on_submit():
         evaluation=Evaluation(score=form.score.data/10,
                               feedback=form.feedback.data,
@@ -303,7 +356,10 @@ def evaluate_form(id):
         db.session.add(evaluation)
         db.session.commit()
         flash("You reviews have been submitted","success")
-        return redirect(url_for("profile"))
+        if src:
+            return redirect(url_for("more_info_submission"))
+        else:
+            return redirect(url_for("profile"))
     return render_template("evaluate_form.html",legend="Reviews",form=form)
 
 
@@ -316,3 +372,46 @@ def reviews(id):
     pdf=url_for("static",filename="/project_details/"+submission.project.descriptive_pdf)
     return render_template("reviews.html",evaluation=evaluation,submission=submission,img_src=img_src,pdf=pdf)
 
+
+@app.route("/profile/moreinfo/projects")
+@login_required
+def more_info():
+    projects=current_user.project
+    projects.reverse()
+    return render_template("more_projects.html",projects=projects,title="Projects")
+
+
+@app.route("/profile/moreinfo/submission")
+@login_required
+def more_info_submission():
+    projects=current_user.project
+    submissions=[]
+    for i in projects:
+        submission=Submission.query.filter_by(project=i).all()
+        submissions.extend(submission)
+    submissions.reverse()
+    return render_template("more-submission.html",submissions=submissions)
+
+
+@app.route("/profile/moreinfo/evaluation")
+@login_required
+def more_info_evaluation():
+    evaluation=current_user.evaluation
+    evaluation.reverse()
+    return render_template("more-evaluation.html",evaluation=evaluation)
+
+
+@app.route("/profile/moreinfo/taken")
+@login_required
+def more_info_taken():
+    projects=current_user.project_taken
+    projects.reverse()
+    return render_template("more-taken.html",projects=projects)
+
+
+@app.route("/profile/moreinfo/submitted")
+@login_required
+def more_info_submitted():
+    submissions=current_user.submission
+    submissions.reverse()
+    return render_template("more-submitted.html",submissions=submissions)

@@ -1,0 +1,41 @@
+{% extends "more-info-layout.html" %}
+{% block label %}Projects{% endblock label %}
+{% block headings %}
+  <th>Project's Title</th>
+  <th>Upload Date</th>
+  <th>Active Workers</th>
+  <th>Update</th>
+  <th>Delete</th>
+{% endblock headings %}
+{% block data %}
+{% for i in projects %}
+  <tr>
+    <td>{{i.title}}</td>
+    <td>{{i.created_at.strftime("%Y-%m-%d")}}</td>
+    <td>{{i.user_count}}</td>
+    <td><a class="btn btn-info" href="{{url_for('update_project',project_id=i.id,act='updating')}}">Update</a></td>
+    <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
+    
+      <!-- Modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+              <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" style="color:black;" id="deleteModalLabel">Delete Project Permanently</h5>
+                  <button type="button" style="margin:0.01rem;" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-footer">
+                  <form action="{{url_for('delete_project',project_id=i.id,act='deleting')}}" method="POST">
+                      <input type="submit" class="btn btn-danger" value="Delete">
+                  </form>
+              </div>
+              </div>
+          </div>
+        </div>
+    
+    </td>
+  </tr>
+  {% endfor %}
+{% endblock data %}

@@ -37,6 +37,7 @@
       </div>
     </div>
 
+    <div class="projects-table-outer">
     <div class="projects-table-container">
       <div class="table-header">
         <h2>Projects Taken</h2>
@@ -87,7 +88,15 @@
           </tbody>
         </table>
       </div>
+      </div>
+      <div class="outer-position-btn">
+      {% if plm %}
+        <a class="btn btn-outline-primary position-btn" href="{{url_for('more_info_taken')}}">Load More</a>
+      {% endif %}
+      </div>
     </div>
+
+    <div class="projects-table-outer">
     <div class="projects-table-container">
       <div class="table-header">
         <h2>Projects Submitted</h2>
@@ -121,5 +130,11 @@
         </table>
       </div>
       </div>
+      <div class="outer-position-btn">
+        {% if slm %}
+          <a class="btn btn-outline-primary position-btn" href="{{url_for('more_info_submitted')}}">Load More</a>
+        {% endif %}
+      </div>
+    </div>
   </main>
 {% endblock content %}

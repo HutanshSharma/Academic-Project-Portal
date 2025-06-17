@@ -12,7 +12,11 @@
                     <h2>Submitted by : {{submission.user.username}}</h2>
                     <p>His/Her email : {{submission.user.email}}</p>
                     <p>Submitted on : {{submission.submitted_at.strftime("%Y-%m-%d")}}</p>
-                    <a class="btn btn-success" style="color:white;font-weight: 1000;" href="{{url_for('evaluate_form',id=submission.id)}}">Evaluate</a>
+                    {% if request.args.get("act") %}
+                        <a class="btn btn-success" style="color:white;font-weight: 1000;" href="{{url_for('evaluate_form',id=submission.id,act=request.args.get('act'))}}">Evaluate</a>
+                    {% else %}
+                        <a class="btn btn-success" style="color:white;font-weight: 1000;" href="{{url_for('evaluate_form',id=submission.id)}}">Evaluate</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
