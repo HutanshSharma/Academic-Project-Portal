@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField,PasswordField,SubmitField,FieldList,SelectField,TextAreaField,HiddenField,IntegerRangeField
+from wtforms import StringField,PasswordField,SubmitField,FieldList,SelectField
 from flask_wtf.file import FileField,FileAllowed
 from wtforms.validators import DataRequired,Length,EqualTo,ValidationError,Email
 from Project.models import User
@@ -38,14 +38,6 @@ class login_form(FlaskForm):
     submit=SubmitField("Login")
 
 
-class project_form(FlaskForm):
-    title=StringField("Title",validators=[DataRequired(),Length(2,100)])
-    description=TextAreaField("Description",validators=[DataRequired()])
-    skills=HiddenField('Add the skills required for this project',validators=[DataRequired()])
-    file_pdf=FileField("Upload the pdf with the project details",validators=[FileAllowed(['pdf','txt'])])
-    submit=SubmitField("Submit")
-
-
 class update_profile_form(FlaskForm):
     username=StringField("Username",validators=[DataRequired(),Length(2,30)])
     email=StringField("Email",validators=[DataRequired()])
@@ -64,24 +56,14 @@ class update_profile_form(FlaskForm):
             user=User.query.filter_by(email=email.data).first()
             if user:
                 raise ValidationError("This email has already been taken")
+            
 
-      
-class submit_project(FlaskForm):
-    info=TextAreaField("Briefly Describe your submission",validators=[DataRequired()])
-    project_link=StringField("Enter the link to you Repository",validators=[DataRequired()])
-    submit=SubmitField("Submit Project")
+class reset_password_email_form(FlaskForm):
+    email=StringField("Email",validators=[DataRequired()])
+    submit=SubmitField("Send Email")
 
 
-class evaluate_project(FlaskForm):
-    score=IntegerRangeField("Rate this project (1-10)",default=0,validators=[DataRequired()])
-    feedback=TextAreaField("Give feedback here",validators=[DataRequired()])
-    submit=SubmitField("Submit Reviews")    
-
-class search_projects(FlaskForm):
-    category=FieldList(SelectField("Search By",choices=[
-        ('teacher_name','Teacher name'),
-        ('project_name','Project name'),
-        ('skill','Skill')
-    ],validators=[DataRequired()]),min_entries=1)
-    search=StringField("Search here",validators=[DataRequired()])
-    submit=SubmitField("Search")
+class reset_password_form(FlaskForm):
+    password=PasswordField("Password",validators=[DataRequired()])
+    confirm_password=PasswordField("Confirm Password",validators=[DataRequired(),EqualTo('password')])
+    submit=SubmitField("Reset Password")

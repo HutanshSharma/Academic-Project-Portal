@@ -65,7 +65,7 @@
             </div>
             <div class="info-section">
                 {% if submission.project.descriptive_pdf == "No pdf" %}
-                    <a class="btn btn-dark info-btn" href="{{url_for('project_details',project_id=submission.project.id)}}" target="_blank">No pdf uploaded by the teacher</a>
+                    <a class="btn btn-dark info-btn" href="{{url_for('projects.project_details',project_id=submission.project.id)}}" target="_blank">No pdf uploaded by the teacher</a>
                 {% else %}
                     <a class="button button-diff info-btn" href="{{pdf}}" target="_blank">Open pdf with details</a>
                 {% endif %}

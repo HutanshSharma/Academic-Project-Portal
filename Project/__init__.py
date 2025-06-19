@@ -2,15 +2,28 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
+from Project.config import config
+from flask_mail import Mail
 
-app=Flask(__name__)
+db=SQLAlchemy()
+bcrypt=Bcrypt()
+loginmanager=LoginManager()
+mail=Mail()
 
-app.config['SECRET_KEY']="75c26da91c5c7eb2"
-app.config['SQLALCHEMY_DATABASE_URI']="sqlite:///user.db"
-app.config['SQLALCHEMY_TRACK_MODIFICATION']=False
+def create_app(current_config=config):
+    app=Flask(__name__)
+    app.config.from_object(config)
 
-db=SQLAlchemy(app)
-bcrypt=Bcrypt(app)
-loginmanager=LoginManager(app)
+    from Project.users.routes import users
+    from Project.projects.routes import projects
+    from Project.main.routes import main
+    app.register_blueprint(users)
+    app.register_blueprint(projects)
+    app.register_blueprint(main)
 
-from Project import routes
+    db.init_app(app)
+    bcrypt.init_app(app)
+    loginmanager.init_app(app)
+    mail.init_app(app)
+    
+    return app

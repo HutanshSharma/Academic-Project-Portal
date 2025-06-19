@@ -1,6 +1,8 @@
 from Project import db,loginmanager
 from flask_login import UserMixin
 from datetime import datetime
+from itsdangerous import URLSafeTimedSerializer as serilaizer
+from flask import current_app
 
 
 @loginmanager.user_loader
@@ -24,6 +26,19 @@ class User(db.Model,UserMixin):
     submission=db.relationship("Submission",backref="user",lazy=True,cascade="all,delete")
     evaluation=db.relationship("Evaluation",backref="user",lazy=True,cascade="all,delete")
     project_taken=db.relationship("Project_Taken",backref="user",lazy=True,cascade="all,delete")
+
+    def create_token(self):
+        s=serilaizer(current_app.config['SECRET_KEY'])
+        return s.dumps({'user_id':self.id})
+    
+    @staticmethod
+    def verify_token(token,expire_time=600):
+        s=serilaizer(current_app.config['SECRET_KEY'])
+        try:
+            user_id=s.loads(token,expire_time)
+        except:
+            return None
+        return user_id
 
     def __repr__(self):
         return f"{self.username},{self.email},{self.role}"

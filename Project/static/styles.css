@@ -89,8 +89,11 @@ nav {
   color: var(--color-text);
   border: 0;
   height:2.25rem;
-  margin-left: 0.5rem;
   background-color: var(--color-primary);
+}
+
+.button-home {
+  margin-left: 0.5rem;
 }
 
 .button-diff:hover {

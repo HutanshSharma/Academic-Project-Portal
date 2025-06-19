@@ -7,7 +7,7 @@
         <h2>{{current_user.username}}</h2>
         <p>{{current_user.email}}</p>
         <p>{{current_user.role.capitalize()}}</p>
-        <a class="button" href="{{url_for('update_profile')}}">Edit Profile</a>
+        <a class="button" href="{{url_for('users.update_profile')}}">Edit Profile</a>
       </div>
     </div>
 
@@ -41,7 +41,7 @@
     <div class="projects-table-container">
       <div class="table-header">
         <h2>Projects</h2>
-        <a class="button button-diff" href="{{url_for('add_project')}}">Add Project</a>
+        <a class="button button-diff" href="{{url_for('projects.add_project')}}">Add Project</a>
       </div>
 
       <div class="table-responsive">
@@ -61,7 +61,7 @@
                 <td>{{i.title}}</td>
                 <td>{{i.created_at.strftime("%Y-%m-%d")}}</td>
                 <td>{{i.user_count}}</td>
-                <td><a class="btn btn-info" href="{{url_for('update_project',project_id=i.id)}}">Update</a></td>
+                <td><a class="btn btn-info" href="{{url_for('projects.update_project',project_id=i.id)}}">Update</a></td>
                 <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
                 
                   <!-- Modal -->
@@ -75,7 +75,7 @@
                               </button>
                           </div>
                           <div class="modal-footer">
-                              <form action="{{url_for('delete_project',project_id=i.id)}}" method="POST">
+                              <form action="{{url_for('projects.delete_project',project_id=i.id)}}" method="POST">
                                   <input type="submit" class="btn btn-danger" value="Delete">
                               </form>
                           </div>
@@ -92,7 +92,7 @@
     </div>
     <div class="outer-position-btn">
     {% if plm %}
-      <a class="btn btn-outline-primary position-btn" href="{{url_for('more_info')}}">Load More</a>
+      <a class="btn btn-outline-primary position-btn" href="{{url_for('projects.more_info')}}">Load More</a>
     {% endif %}
     </div>
     </div>
@@ -123,7 +123,7 @@
                 {% if i.evaluation %}
                   <td><a class="btn btn-dark" >Evaluated</a></td>
                 {% else %}
-                  <td><a class="btn btn-outline-success" href="{{url_for('evaluate',id=i.id)}}">Evaluate</a></td>
+                  <td><a class="btn btn-outline-success" href="{{url_for('projects.evaluate',id=i.id)}}">Evaluate</a></td>
                 {% endif %}    
                 </td>
               </tr>
@@ -134,7 +134,7 @@
     </div>
     <div class="outer-position-btn">
     {% if slm %}
-      <a class="btn btn-outline-primary position-btn" href="{{url_for('more_info_submission')}}">Load More</a>
+      <a class="btn btn-outline-primary position-btn" href="{{url_for('projects.more_info_submission')}}">Load More</a>
     {% endif %}
     </div>
     </div>
@@ -163,7 +163,7 @@
                 <td>{{i.project.created_at.strftime("%Y-%m-%d")}}</td>
                 <td>{{i.submission.user.username}}</td>
                 <td>{{i.submission.submitted_at.strftime("%Y-%m-%d")}}</td>
-                <td><a class="btn btn-outline-info" href="{{url_for('reviews',id=i.id)}}">See Reviews given</a></td>
+                <td><a class="btn btn-outline-info" href="{{url_for('projects.reviews',id=i.id)}}">See Reviews given</a></td>
               </tr>
               {% endfor %}
           </tbody>
@@ -173,7 +173,7 @@
     </div>
     <div class="outer-position-btn">
     {% if elm %}
-      <a class="btn btn-outline-primary position-btn" href="{{url_for('more_info_evaluation')}}">Load More</a>
+      <a class="btn btn-outline-primary position-btn" href="{{url_for('projects.more_info_evaluation')}}">Load More</a>
     {% endif %}
     </div>
     </div>

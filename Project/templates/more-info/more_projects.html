@@ -1,4 +1,4 @@
-{% extends "more-info-layout.html" %}
+{% extends "more-info/more-info-layout.html" %}
 {% block label %}Projects{% endblock label %}
 {% block headings %}
   <th>Project's Title</th>
@@ -13,7 +13,7 @@
     <td>{{i.title}}</td>
     <td>{{i.created_at.strftime("%Y-%m-%d")}}</td>
     <td>{{i.user_count}}</td>
-    <td><a class="btn btn-info" href="{{url_for('update_project',project_id=i.id,act='updating')}}">Update</a></td>
+    <td><a class="btn btn-info" href="{{url_for('projects.update_project',project_id=i.id,act='updating')}}">Update</a></td>
     <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>
     
       <!-- Modal -->
@@ -27,7 +27,7 @@
                   </button>
               </div>
               <div class="modal-footer">
-                  <form action="{{url_for('delete_project',project_id=i.id,act='deleting')}}" method="POST">
+                  <form action="{{url_for('projects.delete_project',project_id=i.id,act='deleting')}}" method="POST">
                       <input type="submit" class="btn btn-danger" value="Delete">
                   </form>
               </div>

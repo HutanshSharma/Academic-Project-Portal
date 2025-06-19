@@ -7,7 +7,7 @@
         <h2>{{current_user.username}}</h2>
         <p>{{current_user.email}}</p>
         <p>{{current_user.role.capitalize()}}</p>
-        <a class="button" href="{{url_for('update_profile')}}">Edit Profile</a>
+        <a class="button" href="{{url_for('users.update_profile')}}">Edit Profile</a>
       </div>
     </div>
 
@@ -60,7 +60,7 @@
                 <td>{{i.project.title}}</td>
                 <td>{{i.taken_at.strftime("%Y-%m-%d")}}</td>
                 <td>{{i.project.user.username}}</td>
-                <td><a class="btn btn-info" href="{{url_for('submit_proj_taken',project_taken_id=i.id)}}">Submit</a></td>
+                <td><a class="btn btn-info" href="{{url_for('projects.submit_proj_taken',project_taken_id=i.id)}}">Submit</a></td>
                 <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal">Remove</button>
                 
                   <!-- Modal -->
@@ -74,7 +74,7 @@
                               </button>
                           </div>
                           <div class="modal-footer">
-                              <form action="{{url_for('remove_proj_taken',project_taken_id=i.id)}}" method="POST">
+                              <form action="{{url_for('projects.remove_proj_taken',project_taken_id=i.id)}}" method="POST">
                                   <input type="submit" class="btn btn-danger" value="Delete">
                               </form>
                           </div>
@@ -91,7 +91,7 @@
       </div>
       <div class="outer-position-btn">
       {% if plm %}
-        <a class="btn btn-outline-primary position-btn" href="{{url_for('more_info_taken')}}">Load More</a>
+        <a class="btn btn-outline-primary position-btn" href="{{url_for('projects.more_info_taken')}}">Load More</a>
       {% endif %}
       </div>
     </div>
@@ -122,7 +122,7 @@
                 {% if not i.evaluation %}
                   <td><a class="btn btn-dark">No Reviews yet</a></td>
                 {% else %}
-                  <td><a class="btn btn-success" href="{{url_for('reviews',id=i.evaluation[0].id)}}">Check Reviews</a></td>
+                  <td><a class="btn btn-success" href="{{url_for('projects.reviews',id=i.evaluation[0].id)}}">Check Reviews</a></td>
                 {% endif %}
               </tr>
             {% endfor %}
@@ -132,7 +132,7 @@
       </div>
       <div class="outer-position-btn">
         {% if slm %}
-          <a class="btn btn-outline-primary position-btn" href="{{url_for('more_info_submitted')}}">Load More</a>
+          <a class="btn btn-outline-primary position-btn" href="{{url_for('projects.more_info_submitted')}}">Load More</a>
         {% endif %}
       </div>
     </div>

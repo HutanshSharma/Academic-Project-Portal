@@ -1,4 +1,4 @@
-{% extends "more-info-layout.html" %}
+{% extends "more-info/more-info-layout.html" %}
 {% block label %}Submissions{% endblock label %}
 {% block headings %}
     <th>Project's Title</th>
@@ -17,7 +17,7 @@
             {% if i.evaluation %}
                 <td><a class="btn btn-dark" >Evaluated</a></td>
             {% else %}
-                <td><a class="btn btn-outline-success" href="{{url_for('evaluate',id=i.id,act='submission')}}">Evaluate</a></td>
+                <td><a class="btn btn-outline-success" href="{{url_for('projects.evaluate',id=i.id,act='submission')}}">Evaluate</a></td>
             {% endif %}    
             </td>
         </tr>

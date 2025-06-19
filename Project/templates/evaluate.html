@@ -13,9 +13,9 @@
                     <p>His/Her email : {{submission.user.email}}</p>
                     <p>Submitted on : {{submission.submitted_at.strftime("%Y-%m-%d")}}</p>
                     {% if request.args.get("act") %}
-                        <a class="btn btn-success" style="color:white;font-weight: 1000;" href="{{url_for('evaluate_form',id=submission.id,act=request.args.get('act'))}}">Evaluate</a>
+                        <a class="btn btn-success" style="color:white;font-weight: 1000;" href="{{url_for('projects.evaluate_form',id=submission.id,act=request.args.get('act'))}}">Evaluate</a>
                     {% else %}
-                        <a class="btn btn-success" style="color:white;font-weight: 1000;" href="{{url_for('evaluate_form',id=submission.id)}}">Evaluate</a>
+                        <a class="btn btn-success" style="color:white;font-weight: 1000;" href="{{url_for('projects.evaluate_form',id=submission.id)}}">Evaluate</a>
                     {% endif %}
                 </div>
             </div>
@@ -56,7 +56,7 @@
             </div>
             <div class="info-section">
                 {% if submission.project.descriptive_pdf == "No pdf" %}
-                    <a class="btn btn-dark info-btn" href="{{url_for('project_details',project_id=submission.project.id)}}" target="_blank">No pdf uploaded by the teacher</a>
+                    <a class="btn btn-dark info-btn" href="{{url_for('projects.project_details',project_id=submission.project.id)}}" target="_blank">No pdf uploaded by the teacher</a>
                 {% else %}
                     <a class="button button-diff info-btn" href="{{pdf}}" target="_blank">Open pdf with details</a>
                 {% endif %}

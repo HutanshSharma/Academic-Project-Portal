@@ -1,4 +1,4 @@
-{% extends "more-info-layout.html" %}
+{% extends "more-info/more-info-layout.html" %}
 {% block label %}Projects Submitted{% endblock label %}
 {% block headings %}
     <th>Project's Title</th>
@@ -17,7 +17,7 @@
         {% if not i.evaluation %}
             <td><a class="btn btn-dark">No Reviews yet</a></td>
         {% else %}
-            <td><a class="btn btn-success" href="{{url_for('reviews',id=i.evaluation[0].id)}}">Check Reviews</a></td>
+            <td><a class="btn btn-success" href="{{url_for('projects.reviews',id=i.evaluation[0].id)}}">Check Reviews</a></td>
         {% endif %}
         </tr>
     {% endfor %}

@@ -1,10 +1,9 @@
 let skills=[];
 
+
 const slider = document.getElementById('page-score');
 const scoreOutput = document.getElementById('score-output');
 
-console.log("Slider:", slider);
-console.log("Score Output:", scoreOutput);
 
 if (slider && scoreOutput) {
     scoreOutput.textContent = slider.value/10;
@@ -18,10 +17,12 @@ if (slider && scoreOutput) {
     });
 }
 
+
 if(document.getElementById("update")){
   console.log("print")
   addSkillsToDisplay()
 }
+
 
 function addSkillsToDisplay(){
   const input=document.getElementById("skills");
@@ -36,6 +37,7 @@ function addSkillsToDisplay(){
   updateDisplay();
 }
 
+
 const inputtaken=document.getElementById("skillInput");
 
 inputtaken.addEventListener("keydown",function(event) {
@@ -44,6 +46,7 @@ inputtaken.addEventListener("keydown",function(event) {
     addSkill();
   }
 });
+
 
 function addSkill() {
     const input=document.getElementById("skillInput");
@@ -54,6 +57,7 @@ function addSkill() {
         updateDisplay();
     }
   }
+
 
 function updateDisplay() {
   const container=document.getElementById("skillsDisplay");
@@ -91,6 +95,7 @@ function updateDisplay() {
 
   document.getElementById("skills").value =skills.join(", ");
 }
+
 
 document.getElementById("image").addEventListener("change", function() {
     const fileName=document.getElementById("file-name");
