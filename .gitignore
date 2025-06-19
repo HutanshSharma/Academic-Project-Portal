@@ -8,3 +8,9 @@ __pycache__/
 
 # mydatabase
 instance/
+
+# profile_pics
+profile_pics/
+
+#project_details
+project_details/

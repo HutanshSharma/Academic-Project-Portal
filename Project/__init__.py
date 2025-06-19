@@ -17,9 +17,11 @@ def create_app(current_config=config):
     from Project.users.routes import users
     from Project.projects.routes import projects
     from Project.main.routes import main
+    from Project.errors.handler import errors
     app.register_blueprint(users)
     app.register_blueprint(projects)
     app.register_blueprint(main)
+    app.register_blueprint(errors)
 
     db.init_app(app)
     bcrypt.init_app(app)
