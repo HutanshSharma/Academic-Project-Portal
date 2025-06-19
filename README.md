@@ -37,14 +37,12 @@ A robust web-based platform designed for streamlined project collaboration betwe
 | Category       | Technologies Used                                |
 |----------------|--------------------------------------------------|
 | **Backend**    | Flask, SQLAlchemy, Flask-Login, Flask-WTF        |
-| **Frontend**   | HTML, CSS, Bootstrap (or other framework used)   |
+| **Frontend**   | HTML, CSS, Bootstrap, JavaScript                 |
 | **Database**   | SQLite                                            |
 | **ORM**        | SQLAlchemy                                        |
 | **Email**      | Flask-Mail (for password reset functionality)    |
 | **File Handling** | Python `os`, `secrets`, Pillow (PIL)            |
 | **Authentication** | Flask-Login, Bcrypt for password hashing      |
-
----
 
 ---
 
