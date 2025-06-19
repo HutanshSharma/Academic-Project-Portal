@@ -1,14 +1,14 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField,PasswordField,SubmitField,FieldList,SelectField,TextAreaField,HiddenField,IntegerRangeField
 from flask_wtf.file import FileField,FileAllowed
-from wtforms.validators import DataRequired,Length,EqualTo,ValidationError
+from wtforms.validators import DataRequired,Length,EqualTo,ValidationError,Email
 from Project.models import User
 from flask_login import current_user
 
 
 class registeration_form(FlaskForm):
     username=StringField("Username",validators=[DataRequired(),Length(2,30)])
-    email=StringField("Email",validators=[DataRequired()])
+    email=StringField("Email",validators=[DataRequired(),Email()])
     password=PasswordField("Password",validators=[DataRequired()])
     confirm_password=PasswordField("Confirm Password",validators=[DataRequired(),EqualTo('password')])
     category=FieldList(SelectField("Are you a student or a teacher?",choices=[
