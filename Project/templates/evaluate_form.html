@@ -16,7 +16,7 @@
                                 <span class="text-danger">{{error}}</span>
                             {% endfor %}
                         {% else %}
-                            {{form.score(id="page-score",class="score-getter")}}
+                            {{form.score(id="page-score",class="score-getter",type='range')}}
                         {% endif %}
                     <div class="dis">
                         <div class="score-display">Current-score :  </div>
@@ -40,5 +40,5 @@
             </form>
         </div>
     </div>
-    <script src="{{url_for('static',filename='users.forms.js')}}"></script>
+    <script src="{{url_for('static',filename='forms.js')}}"></script>
 {% endblock content %}

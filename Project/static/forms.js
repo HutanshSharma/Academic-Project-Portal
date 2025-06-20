@@ -17,7 +17,6 @@ if (slider && scoreOutput) {
     });
 }
 
-
 if(document.getElementById("update")){
   console.log("print")
   addSkillsToDisplay()
